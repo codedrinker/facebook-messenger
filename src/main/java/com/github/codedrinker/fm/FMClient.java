@@ -38,7 +38,7 @@ public class FMClient {
     private String accessToken;
     private String accessSecret;
     private FMResultAspect fmResultAspect;
-    private List<FMHandler> handlers = new ArrayList<>();
+    private List<FMHandler> handlers = new ArrayList<FMHandler>();
 
     private static FMClient client;
 

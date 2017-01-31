@@ -18,7 +18,6 @@ package com.github.codedrinker.fm.handler;
 import com.github.codedrinker.fm.entity.FMReceiveMessage;
 
 public abstract class FMMessageReadHandler implements FMHandler {
-    @Override
     public boolean canHandle(FMReceiveMessage.Messaging message) {
         return message != null && message.getRead() != null;
     }

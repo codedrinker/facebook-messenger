@@ -31,7 +31,7 @@ public class FMCommandInvoker {
     public static FMCommandInvoker getInstance() {
         if (fmCommandInvoker == null) {
             fmCommandInvoker = new FMCommandInvoker();
-            commands = new HashMap<>();
+            commands = new HashMap<String, FMCommand>();
         }
         return fmCommandInvoker;
     }

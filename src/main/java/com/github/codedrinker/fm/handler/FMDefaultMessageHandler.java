@@ -24,7 +24,6 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
 public class FMDefaultMessageHandler extends FMMessageHandler {
-    @Override
     public void handle(FMReceiveMessage.Messaging message) {
         if (message.getMessage().getQuick_reply() != null && StringUtils.isNotBlank(message.getMessage().getQuick_reply().getPayload())) {
             FMCommandParser parse = FMClient.getInstance().getFmCommandParser().parse(message.getMessage().getQuick_reply().getPayload());

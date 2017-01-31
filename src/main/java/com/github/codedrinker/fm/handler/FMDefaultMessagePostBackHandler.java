@@ -18,7 +18,6 @@ package com.github.codedrinker.fm.handler;
 import com.github.codedrinker.fm.entity.FMReceiveMessage;
 
 public class FMDefaultMessagePostBackHandler extends FMMessagePostBackHandler {
-    @Override
     public void handle(FMReceiveMessage.Messaging message) {
         //postback
     }
