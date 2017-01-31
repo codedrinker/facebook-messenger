@@ -2,7 +2,7 @@
 A most easily usable Facebook Messenger Platform API
 
 # Road Map
-0.0.1 Preview Link
+1.0.0
 
 # Apache License
 Copyright 2017 Chunlei Wang
