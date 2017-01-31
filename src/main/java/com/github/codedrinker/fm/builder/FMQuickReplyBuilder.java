@@ -18,9 +18,6 @@ package com.github.codedrinker.fm.builder;
 
 import com.github.codedrinker.fm.entity.FMReplyMessage;
 
-/**
- * Created by codedrinker on 11/29/16.
- */
 public class FMQuickReplyBuilder {
 
     public FMQuickReplyBuilder() {
