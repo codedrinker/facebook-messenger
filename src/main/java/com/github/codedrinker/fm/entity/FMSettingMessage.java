@@ -23,7 +23,85 @@ public class FMSettingMessage {
     private ThreadState thread_state;
     private List<CallToAction> call_to_actions;
 
+    public SettingType getSetting_type() {
+        return setting_type;
+    }
+
+    public void setSetting_type(SettingType setting_type) {
+        this.setting_type = setting_type;
+    }
+
+    public Greeting getGreeting() {
+        return greeting;
+    }
+
+    public void setGreeting(Greeting greeting) {
+        this.greeting = greeting;
+    }
+
+    public ThreadState getThread_state() {
+        return thread_state;
+    }
+
+    public void setThread_state(ThreadState thread_state) {
+        this.thread_state = thread_state;
+    }
+
+    public List<CallToAction> getCall_to_actions() {
+        return call_to_actions;
+    }
+
+    public void setCall_to_actions(List<CallToAction> call_to_actions) {
+        this.call_to_actions = call_to_actions;
+    }
+
     public static class CallToAction {
+
+        private String payload;
+        private FMEnum.WebViewHeightRatio webview_height_ratio;
+        private String url;
+        private String title;
+        private CallActionType type = CallActionType.postback;
+
+        public String getPayload() {
+            return payload;
+        }
+
+        public void setPayload(String payload) {
+            this.payload = payload;
+        }
+
+        public FMEnum.WebViewHeightRatio getWebview_height_ratio() {
+            return webview_height_ratio;
+        }
+
+        public void setWebview_height_ratio(FMEnum.WebViewHeightRatio webview_height_ratio) {
+            this.webview_height_ratio = webview_height_ratio;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public CallActionType getType() {
+            return type;
+        }
+
+        public void setType(CallActionType type) {
+            this.type = type;
+        }
 
         public CallToAction(String payload, FMEnum.WebViewHeightRatio webview_height_ratio, String url, String title) {
             this.payload = payload;
@@ -49,12 +127,6 @@ public class FMSettingMessage {
             this.title = title;
         }
 
-        private String payload;
-        private FMEnum.WebViewHeightRatio webview_height_ratio;
-        private String url;
-        private String title;
-        private CallActionType type = CallActionType.postback;
-
         public CallToAction() {
         }
 
@@ -65,6 +137,15 @@ public class FMSettingMessage {
 
     public static class Greeting {
         private String text;
+
+        public String getText() {
+            return text;
+        }
+
+        public void setText(String text) {
+            this.text = text;
+        }
+
     }
 
     public enum SettingType {
