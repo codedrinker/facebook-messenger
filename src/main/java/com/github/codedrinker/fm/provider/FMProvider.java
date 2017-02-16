@@ -29,10 +29,14 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
 
 public class FMProvider {
+    final static Logger logger = LoggerFactory.getLogger(FMProvider.class);
+
     private static String getAccessToken() {
         String accessToken;
         if (FMClient.getInstance().getAccessToken() == null) {
@@ -89,6 +93,7 @@ public class FMProvider {
             FMResult fmpResult = JSON.parseObject(result, FMResult.class);
             return fmpResult;
         } catch (Exception e) {
+            logger.error("Request Facebook Message API error with url : {}", url, e);
             return null;
         }
     }
