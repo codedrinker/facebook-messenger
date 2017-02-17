@@ -16,11 +16,17 @@
 package com.github.codedrinker.fm.aspect;
 
 import com.github.codedrinker.fm.entity.FMResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FMDefaultResultAspect implements FMResultAspect {
+    Logger logger = LoggerFactory.getLogger(FMDefaultResultAspect.class);
+
     public void handle(FMResult fmpResult) {
         if (fmpResult != null && fmpResult.getError() != null) {
-            //log
+            if (logger.isDebugEnabled()) {
+                logger.debug("Request Facebook Message API occur an error. {}", fmpResult.getError());
+            }
         }
     }
 }
