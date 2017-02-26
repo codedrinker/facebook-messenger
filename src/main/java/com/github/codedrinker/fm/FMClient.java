@@ -38,6 +38,7 @@ public class FMClient {
     Logger logger = LoggerFactory.getLogger(FMClient.class);
 
     private FMCommandParser fmCommandParser;
+    private boolean isCommandEnabled = false;
     private String accessToken;
     private String accessSecret;
     private FMResultAspect fmResultAspect;
@@ -46,9 +47,7 @@ public class FMClient {
     private static FMClient client;
 
     private FMClient() {
-        this.fmCommandParser = new FMCommandDefaultParser();
         this.fmResultAspect = new FMDefaultResultAspect();
-        setDefaultCommand();
         setDefaultHandler();
     }
 
@@ -57,6 +56,12 @@ public class FMClient {
             client = new FMClient();
         }
         return client;
+    }
+
+    public void enableCommand() {
+        this.isCommandEnabled = true;
+        this.fmCommandParser = new FMCommandDefaultParser();
+        setDefaultCommand();
     }
 
     private void setDefaultCommand() {
