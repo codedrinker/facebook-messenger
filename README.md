@@ -1,6 +1,55 @@
 # facebook-messenger
 A most easily usable Facebook Messenger Platform API
 
+# Usage
+
+```xml
+<dependency>
+  <groupId>com.github.codedrinker</groupId>
+  <artifactId>facebook-messenger</artifactId>
+  <version>1.0.0</version>
+</dependency>
+```
+## Use FMClicent.getInstance() to obtain API Instance.
+
+```java
+ FMClient fmClient = FMClient.getInstance();
+```
+## Use with* methods to set parameters to FMClient instance. 
+
+```java
+public class FMPPostbackHandler extends FMMessagePostBackHandler {
+    @Override
+    public void handle(FMReceiveMessage.Messaging message) {
+        log.debug("FMPPostbackHandler handlePostBack, sender -> {}, postback -> {}", message.getSender(), message);
+    }
+}
+```
+```java
+FMClient fmClient = FMClient.getInstance();
+FMPPostbackHandler fmpPostbackHandler = new FMPPostbackHandler();
+fmClient.withAccessToken("token")
+        .withAccessSecret("secret")
+        .withFmMessagePostBackHandler(fmpPostbackHandler);
+```
+## Use signature method to valid the payload.
+
+```java
+StringBuilder buffer = new StringBuilder();
+BufferedReader reader = request.getReader();
+String line;
+while ((line = reader.readLine()) != null) {
+    buffer.append(line);
+}
+String payload = buffer.toString();
+fmClient.signature(payload, xHubSignature);
+```
+## Use dispatch method to dispatch payload message.
+
+```java
+fmClient.dispatch(payload);
+```
+
 # Road Map
 1.0.0
 
