@@ -101,7 +101,11 @@ public class FMClient {
         }
 
         String decodePayload = Signature.decode(payload, this.accessSecret);
-        return StringUtils.equals(decodePayload, xHubSignature);
+        boolean signature = StringUtils.equals(decodePayload, xHubSignature);
+        if (logger.isDebugEnabled()) {
+            logger.debug("decode palyload signature is : {}, signature result is : {}", decodePayload, signature);
+        }
+        return signature;
     }
 
     public void withHandlers(FMHandler... handlers) {
