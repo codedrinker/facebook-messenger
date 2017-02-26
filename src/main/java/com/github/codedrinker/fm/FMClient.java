@@ -21,11 +21,12 @@ import com.github.codedrinker.fm.aspect.FMResultAspect;
 import com.github.codedrinker.fm.command.FMCommand;
 import com.github.codedrinker.fm.command.FMCommandInvoker;
 import com.github.codedrinker.fm.command.FMDefaultCommand;
-import com.github.codedrinker.fm.entity.FMReceiveMessage;
+import com.github.codedrinker.fm.entity.*;
 import com.github.codedrinker.fm.exception.AccessSecretUndefinedException;
 import com.github.codedrinker.fm.handler.*;
 import com.github.codedrinker.fm.parser.FMCommandDefaultParser;
 import com.github.codedrinker.fm.parser.FMCommandParser;
+import com.github.codedrinker.fm.provider.FMProvider;
 import com.github.codedrinker.fm.utils.Signature;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -89,6 +90,18 @@ public class FMClient {
             }
 
         }
+    }
+
+    public FMResult sendMessage(FMReplyMessage message) {
+        return FMProvider.sendMessage(message);
+    }
+
+    public FMResult sendSetting(FMSettingMessage message) {
+        return FMProvider.sendSetting(message);
+    }
+
+    public FMUser getUserProfile(String id) {
+        return FMProvider.getUserProfile(id);
     }
 
     public boolean signature(String payload, String xHubSignature) {
