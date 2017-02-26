@@ -28,11 +28,14 @@ import com.github.codedrinker.fm.parser.FMCommandDefaultParser;
 import com.github.codedrinker.fm.parser.FMCommandParser;
 import com.github.codedrinker.fm.utils.Signature;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FMClient {
+    Logger logger = LoggerFactory.getLogger(FMClient.class);
 
     private FMCommandParser fmCommandParser;
     private String accessToken;
@@ -84,6 +87,10 @@ public class FMClient {
     }
 
     public boolean signature(String payload, String xHubSignature) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("payload is : {}", payload);
+            logger.debug("xHubSignature is : {}", xHubSignature);
+        }
         if (this.accessSecret == null) {
             throw new AccessSecretUndefinedException();
         }
