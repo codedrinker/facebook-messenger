@@ -16,9 +16,15 @@
 package com.github.codedrinker.fm.handler;
 
 import com.github.codedrinker.fm.entity.FMReceiveMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FMDefaultMessageReferralHandler extends FMMessageReferralHandler {
+    Logger logger = LoggerFactory.getLogger(FMDefaultMessageReferralHandler.class);
+
     public void handle(FMReceiveMessage.Messaging message) {
-        //referral
+        if (logger.isDebugEnabled()) {
+            logger.debug("dispatch into default message referral handler, message : {}", message);
+        }
     }
 }

@@ -15,25 +15,34 @@
  */
 package com.github.codedrinker.fm.handler;
 
-import com.github.codedrinker.fm.FMClient;
-import com.github.codedrinker.fm.command.FMCommand;
-import com.github.codedrinker.fm.command.FMCommandInvoker;
 import com.github.codedrinker.fm.entity.FMReceiveMessage;
-import com.github.codedrinker.fm.parser.FMCommandParser;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FMDefaultMessageHandler extends FMMessageHandler {
+
+    Logger logger = LoggerFactory.getLogger(FMDefaultMessageHandler.class);
+
     public void handle(FMReceiveMessage.Messaging message) {
         if (message.getMessage().getQuick_reply() != null && StringUtils.isNotBlank(message.getMessage().getQuick_reply().getPayload())) {
-            FMCommandParser parse = FMClient.getInstance().getFmCommandParser().parse(message.getMessage().getQuick_reply().getPayload());
-            FMCommand command = FMCommandInvoker.getInstance().invoke(parse);
-            command.execute(message.getSender().getId(), parse.getParams());
+            if (logger.isDebugEnabled()) {
+                logger.debug("dispatch into default message handler, which is quick reply message : {}", message);
+            }
+
         } else {
             if (!BooleanUtils.isTrue(message.getMessage().getIs_echo())) {
-                //basic message
+
+                if (logger.isDebugEnabled()) {
+                    logger.debug("dispatch into default message handler which is basic message : {}", message);
+                }
+
             } else {
-                //echo
+
+                if (logger.isDebugEnabled()) {
+                    logger.debug("dispatch into default message handler, which is echo message : {}", message);
+                }
             }
         }
     }
