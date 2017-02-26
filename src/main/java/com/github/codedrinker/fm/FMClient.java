@@ -150,61 +150,71 @@ public class FMClient {
         return signature;
     }
 
-    public void withFMCommands(FMCommand... fmCommands) {
+    public FMClient withFMCommands(FMCommand... fmCommands) {
         for (FMCommand fmCommand : fmCommands) {
             FMCommandInvoker.getInstance().put(fmCommand);
         }
+        return this;
     }
 
-    public void withFmMessageDeliveryHandler(FMMessageDeliveryHandler fmMessageDeliveryHandler) {
+    public FMClient withFmMessageDeliveryHandler(FMMessageDeliveryHandler fmMessageDeliveryHandler) {
         this.fmMessageDeliveryHandler = fmMessageDeliveryHandler;
+        return this;
     }
 
-    public void withFmMessageHandler(FMMessageHandler fmMessageHandler) {
+    public FMClient withFmMessageHandler(FMMessageHandler fmMessageHandler) {
         this.fmMessageHandler = fmMessageHandler;
+        return this;
     }
 
-    public void withFmMessagePostBackHandler(FMMessagePostBackHandler fmMessagePostBackHandler) {
+    public FMClient withFmMessagePostBackHandler(FMMessagePostBackHandler fmMessagePostBackHandler) {
         this.fmMessagePostBackHandler = fmMessagePostBackHandler;
+        return this;
     }
 
-    public void withFmMessageReadHandler(FMMessageReadHandler fmMessageReadHandler) {
+    public FMClient withFmMessageReadHandler(FMMessageReadHandler fmMessageReadHandler) {
         this.fmMessageReadHandler = fmMessageReadHandler;
+        return this;
     }
 
-    public void withFmMessageReferralHandler(FMMessageReferralHandler fmMessageReferralHandler) {
+    public FMClient withFmMessageReferralHandler(FMMessageReferralHandler fmMessageReferralHandler) {
         this.fmMessageReferralHandler = fmMessageReferralHandler;
+        return this;
     }
 
     public FMResultAspect getFmResultAspect() {
         return fmResultAspect;
     }
 
-    public void withFmResultAspect(FMResultAspect fmResultAspect) {
+    public FMClient withFmResultAspect(FMResultAspect fmResultAspect) {
         this.fmResultAspect = fmResultAspect;
+        return this;
     }
 
     public String getAccessToken() {
         return accessToken;
     }
 
-    public void withAccessToken(String accessToken) {
+    public FMClient withAccessToken(String accessToken) {
         this.accessToken = accessToken;
+        return this;
     }
 
     public String getAccessSecret() {
         return accessSecret;
     }
 
-    public void withAccessSecret(String accessSecret) {
+    public FMClient withAccessSecret(String accessSecret) {
         this.accessSecret = accessSecret;
+        return this;
     }
 
     public FMCommandParser getFmCommandParser() {
         return this.fmCommandParser != null ? this.fmCommandParser : new FMCommandDefaultParser();
     }
 
-    public void withFMCommandParser(FMCommandParser fmCommandParser) {
+    public FMClient withFMCommandParser(FMCommandParser fmCommandParser) {
         this.fmCommandParser = fmCommandParser;
+        return this;
     }
 }
