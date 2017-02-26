@@ -43,7 +43,12 @@ public class FMClient {
     private String accessToken;
     private String accessSecret;
     private FMResultAspect fmResultAspect;
-    private List<FMHandler> handlers = new ArrayList<FMHandler>();
+
+    private FMMessageDeliveryHandler fmMessageDeliveryHandler;
+    private FMMessageHandler fmMessageHandler;
+    private FMMessagePostBackHandler fmMessagePostBackHandler;
+    private FMMessageReadHandler fmMessageReadHandler;
+    private FMMessageReferralHandler fmMessageReferralHandler;
 
     private static FMClient client;
 
@@ -70,18 +75,38 @@ public class FMClient {
     }
 
     private void setDefaultHandler() {
-        this.handlers.add(new FMDefaultMessageHandler());
-        this.handlers.add(new FMDefaultMessageDeliveryHandler());
-        this.handlers.add(new FMDefaultMessagePostBackHandler());
-        this.handlers.add(new FMDefaultMessageReadHandler());
-        this.handlers.add(new FMDefaultMessageReferralHandler());
+        this.fmMessageDeliveryHandler = new FMDefaultMessageDeliveryHandler();
+        this.fmMessageHandler = new FMDefaultMessageHandler();
+        this.fmMessagePostBackHandler = new FMDefaultMessagePostBackHandler();
+        this.fmMessageReadHandler = new FMDefaultMessageReadHandler();
+        this.fmMessageReferralHandler = new FMDefaultMessageReferralHandler();
+    }
+
+    private List<FMHandler> getHandlers() {
+        List<FMHandler> handlers = new ArrayList<FMHandler>();
+        if (this.fmMessageDeliveryHandler != null) {
+            handlers.add(fmMessageDeliveryHandler);
+        }
+        if (this.fmMessageHandler != null) {
+            handlers.add(fmMessageHandler);
+        }
+        if (this.fmMessagePostBackHandler != null) {
+            handlers.add(fmMessagePostBackHandler);
+        }
+        if (this.fmMessageReadHandler != null) {
+            handlers.add(fmMessageReadHandler);
+        }
+        if (this.fmMessageReferralHandler != null) {
+            handlers.add(fmMessageReferralHandler);
+        }
+        return handlers;
     }
 
     public void dispatch(String payload) {
         FMReceiveMessage body = JSON.parseObject(payload, FMReceiveMessage.class);
         for (FMReceiveMessage.Entry entry : body.getEntry()) {
             for (FMReceiveMessage.Messaging messaging : entry.getMessaging()) {
-                for (FMHandler fmHandler : this.handlers) {
+                for (FMHandler fmHandler : getHandlers()) {
                     if (fmHandler.canHandle(messaging)) {
                         fmHandler.handle(messaging);
                         continue;
@@ -91,6 +116,7 @@ public class FMClient {
 
         }
     }
+
 
     public FMResult sendMessage(FMReplyMessage message) {
         return FMProvider.sendMessage(message);
@@ -121,23 +147,37 @@ public class FMClient {
         return signature;
     }
 
-    public void withHandlers(FMHandler... handlers) {
-        for (FMHandler fmHandler : handlers) {
-            this.handlers.add(1, fmHandler);
-        }
-    }
-
     public void withFMCommands(FMCommand... fmCommands) {
         for (FMCommand fmCommand : fmCommands) {
             FMCommandInvoker.getInstance().put(fmCommand);
         }
     }
 
+    public void withFmMessageDeliveryHandler(FMMessageDeliveryHandler fmMessageDeliveryHandler) {
+        this.fmMessageDeliveryHandler = fmMessageDeliveryHandler;
+    }
+
+    public void withFmMessageHandler(FMMessageHandler fmMessageHandler) {
+        this.fmMessageHandler = fmMessageHandler;
+    }
+
+    public void withFmMessagePostBackHandler(FMMessagePostBackHandler fmMessagePostBackHandler) {
+        this.fmMessagePostBackHandler = fmMessagePostBackHandler;
+    }
+
+    public void withFmMessageReadHandler(FMMessageReadHandler fmMessageReadHandler) {
+        this.fmMessageReadHandler = fmMessageReadHandler;
+    }
+
+    public void withFmMessageReferralHandler(FMMessageReferralHandler fmMessageReferralHandler) {
+        this.fmMessageReferralHandler = fmMessageReferralHandler;
+    }
+
     public FMResultAspect getFmResultAspect() {
         return fmResultAspect;
     }
 
-    public void setFmResultAspect(FMResultAspect fmResultAspect) {
+    public void withFmResultAspect(FMResultAspect fmResultAspect) {
         this.fmResultAspect = fmResultAspect;
     }
 
@@ -145,7 +185,7 @@ public class FMClient {
         return accessToken;
     }
 
-    public void setAccessToken(String accessToken) {
+    public void withAccessToken(String accessToken) {
         this.accessToken = accessToken;
     }
 
@@ -153,7 +193,7 @@ public class FMClient {
         return accessSecret;
     }
 
-    public void setAccessSecret(String accessSecret) {
+    public void withAccessSecret(String accessSecret) {
         this.accessSecret = accessSecret;
     }
 
@@ -161,7 +201,7 @@ public class FMClient {
         return this.fmCommandParser != null ? this.fmCommandParser : new FMCommandDefaultParser();
     }
 
-    public void setFMCommandParser(FMCommandParser fmCommandParser) {
+    public void withFMCommandParser(FMCommandParser fmCommandParser) {
         this.fmCommandParser = fmCommandParser;
     }
 }
