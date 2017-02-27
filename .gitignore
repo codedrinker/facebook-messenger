@@ -13,3 +13,4 @@ hs_err_pid*
 .idea/
 facebook-messenger.iml
 target/
+.DS_Store
