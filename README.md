@@ -1,8 +1,8 @@
 # facebook-messenger
 A most easily usable Facebook Messenger Platform API
 
-# Usage
-
+## Usage
+### Add the maven dependency
 ```xml
 <dependency>
   <groupId>com.github.codedrinker</groupId>
@@ -10,14 +10,15 @@ A most easily usable Facebook Messenger Platform API
   <version>1.0.0</version>
 </dependency>
 ```
-## Use FMClicent.getInstance() to obtain API Instance.
+### Start with FMClient instance, get FMClient instance in FMClicent.getInstance().
 
 ```java
  FMClient fmClient = FMClient.getInstance();
 ```
-## Use with* methods to set parameters to FMClient instance. 
+### Use with* methods set parameters to FMClient instance. 
 
 ```java
+//new PostBack Handler to receive the postback message from facebook
 public class FMPPostbackHandler extends FMMessagePostBackHandler {
     @Override
     public void handle(FMReceiveMessage.Messaging message) {
@@ -26,13 +27,14 @@ public class FMPPostbackHandler extends FMMessagePostBackHandler {
 }
 ```
 ```java
+//get FMClient instance, and set token, secret, handler paramter.
 FMClient fmClient = FMClient.getInstance();
 FMPPostbackHandler fmpPostbackHandler = new FMPPostbackHandler();
 fmClient.withAccessToken("token")
         .withAccessSecret("secret")
         .withFmMessagePostBackHandler(fmpPostbackHandler);
 ```
-## Use signature method to valid the payload.
+### Use signature method to valid the payload.
 
 ```java
 StringBuilder buffer = new StringBuilder();
@@ -42,18 +44,23 @@ while ((line = reader.readLine()) != null) {
     buffer.append(line);
 }
 String payload = buffer.toString();
-fmClient.signature(payload, xHubSignature);
+boolean signature = fmClient.signature(payload, xHubSignature);
+if(signature){
+  //do
+} else {
+  //forbid
+}
 ```
-## Use dispatch method to dispatch payload message.
+### Use dispatch method to dispatch payload message.
 
 ```java
 fmClient.dispatch(payload);
 ```
 
-# Road Map
+## Road Map
 1.0.0
 
-# Apache License
+## Apache License
 Copyright 2017 Chunlei Wang
 
 Licensed under the Apache License, Version 2.0 (the "License");
