@@ -37,6 +37,8 @@ fmClient.withAccessToken("token")
 ### Use signature method to valid the payload.
 
 ```java
+
+String xHubSignature = request.getHeader("X-Hub-Signature");
 StringBuilder buffer = new StringBuilder();
 BufferedReader reader = request.getReader();
 String line;
