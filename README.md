@@ -78,4 +78,4 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 ## Example
-https://github.com/codedrinker/facebook-messenger-example/tree/master
+https://github.com/codedrinker/facebook-messenger-example
