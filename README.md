@@ -2,6 +2,8 @@
 A most easily usable Facebook Messenger Platform API
 
 ## Usage
+### 中文接入文档
+[中文文档](readme_zh_CN.md)  
 ### Add the maven dependency
 ```xml
 <dependency>
