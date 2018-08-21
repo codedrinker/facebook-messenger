@@ -62,6 +62,20 @@ public class FMSettingMessage {
         private String url;
         private String title;
         private CallActionType type = CallActionType.postback;
+        private List<CallToAction> call_to_actions;
+
+        public List<CallToAction> getCall_to_actions() {
+            return call_to_actions;
+        }
+
+        /**
+         * 设置嵌套 CallToAction -- 嵌套menu 使用
+         * 如果设置嵌套 menu 需 保证 type 为 nested
+         */
+        public void setCall_to_actions(List<CallToAction> call_to_actions) {
+            this.type = CallActionType.nested;
+            this.call_to_actions = call_to_actions;
+        }
 
         public String getPayload() {
             return payload;
@@ -155,7 +169,12 @@ public class FMSettingMessage {
     }
 
     public enum CallActionType {
-        postback, web_url
+        postback,
+        web_url,
+        /**
+         * 嵌套菜单使用
+         */
+        nested
     }
 
     public enum ThreadState {

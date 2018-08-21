@@ -50,7 +50,7 @@ public class FMCallToActionBuilder {
         return this;
     }
 
-    public FMCallToActionBuilder withType(FMSettingMessage.CallActionType callActionType){
+    public FMCallToActionBuilder withType(FMSettingMessage.CallActionType callActionType) {
         this.callToAction.setType(callActionType);
         return this;
     }
