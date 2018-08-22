@@ -81,6 +81,10 @@ public class FMReceiveMessage {
         public void setMessaging(List<Messaging> messaging) {
             this.messaging = messaging;
         }
+
+        public void setStandby(List<Messaging> standby) {
+            this.standby = standby;
+        }
     }
 
     public static class Messaging {
