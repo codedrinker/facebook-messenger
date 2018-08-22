@@ -75,7 +75,7 @@ public class FMProfileSettingMessage {
          * 设置为 true 时，禁用 Messenger 编写工具。也就是说，用户只能通过固定菜单、回传、按钮和网页视图与您的智能助手互动。
          * 默认 false
          */
-        private boolean composer_input_disabled;
+        private boolean composer_input_disabled = true;
 
         /**
          * 固定菜单的顶层菜单项组成的数组
