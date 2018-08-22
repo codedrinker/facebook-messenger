@@ -18,9 +18,9 @@ public class FMProfileSettingMessage {
      */
     private String account_linking_url;
 
-    private PersistentMenu persistent_menu;
+    private List<PersistentMenu> persistent_menu;
 
-    private String get_started;
+    private Payload get_started;
 
     public List<Greeting> getGreeting() {
         return greeting;
@@ -44,25 +44,27 @@ public class FMProfileSettingMessage {
         this.account_linking_url = account_linking_url;
     }
 
-    public PersistentMenu getPersistent_menu() {
+    public List<PersistentMenu> getPersistent_menu() {
         return persistent_menu;
     }
 
     /**
      * set persistent menu
+     *
+     * @param persistent_menu 不是多个一级菜单，如果要根据不同的locale 显示不同的menu，可以配置多个。一般情况数据中一个PersistentMenu
      */
-    public void setPersistent_menu(PersistentMenu persistent_menu) {
+    public void setPersistent_menu(List<PersistentMenu> persistent_menu) {
         this.persistent_menu = persistent_menu;
     }
 
-    public String getGet_started() {
+    public Payload getGet_started() {
         return get_started;
     }
 
     /**
      * set 消息视图下的欢迎语
      */
-    public void setGet_started(String get_started) {
+    public void setGet_started(Payload get_started) {
         this.get_started = get_started;
     }
 
@@ -107,7 +109,7 @@ public class FMProfileSettingMessage {
         }
     }
 
-    public static class MenuItem {
+    public static class MenuItem extends Payload {
         private CallActionType type;
         /**
          * 显示在菜单项上的标题。不超过 30 个字符。
@@ -117,10 +119,6 @@ public class FMProfileSettingMessage {
          * 轻触网址按钮后将打开的网址。如果类型为 web_url，则必须提供
          */
         private String url;
-        /**
-         * 将以 messaging_postbacks 事件的形式发回给 Webhook 的数据。如果类型为 postback，则必须提供。不超过 1000 个字符
-         */
-        private String payload;
 
         /**
          * 嵌套的 menu_item（菜单项），将在下一层级展开。最多可有五个菜单项。如果类型为 nested，则必须提供。一个固定菜单最多可有两个嵌套菜单。
@@ -171,14 +169,6 @@ public class FMProfileSettingMessage {
 
         public void setUrl(String url) {
             this.url = url;
-        }
-
-        public String getPayload() {
-            return payload;
-        }
-
-        public void setPayload(String payload) {
-            this.payload = payload;
         }
 
         public List<MenuItem> getCall_to_actions() {
@@ -271,4 +261,23 @@ public class FMProfileSettingMessage {
             this.locale = locale;
         }
     }
+
+    public static class Payload {
+        /**
+         * 将以 messaging_postbacks 事件的形式发回给 Webhook 的数据。如果类型为 postback，则必须提供。不超过 1000 个字符
+         */
+        private String payload;
+
+        public Payload() {
+        }
+
+        public String getPayload() {
+            return payload;
+        }
+
+        public void setPayload(String payload) {
+            this.payload = payload;
+        }
+    }
+
 }
