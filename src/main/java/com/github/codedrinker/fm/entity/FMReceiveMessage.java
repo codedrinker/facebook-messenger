@@ -15,6 +15,8 @@
  */
 package com.github.codedrinker.fm.entity;
 
+import com.alibaba.fastjson.JSON;
+
 import java.util.List;
 
 public class FMReceiveMessage {
@@ -71,10 +73,10 @@ public class FMReceiveMessage {
          */
         public List<Messaging> getMessaging() {
             if (messaging != null) {
-                System.out.println("Entry => messaging =>" + messaging);
+                System.out.println("Entry => messaging =>" + JSON.toJSONString(messaging));
                 return messaging;
             }
-            System.out.println("Entry => standby =>" + standby);
+            System.out.println("Entry => standby =>" + JSON.toJSONString(standby));
             return standby;
         }
 

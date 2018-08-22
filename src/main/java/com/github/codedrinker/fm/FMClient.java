@@ -104,6 +104,11 @@ public class FMClient {
 
     public void dispatch(String payload) {
         System.out.println("FMClient => dispatch " + payload);
+        logger.debug("debug FMClient => dispatch");
+        logger.info("info FMClient => dispatch");
+        logger.warn("warn FMClient => dispatch");
+        logger.error("error FMClient => dispatch");
+
         FMReceiveMessage body = JSON.parseObject(payload, FMReceiveMessage.class);
         System.out.println(JSON.toJSONString(body));
         for (FMReceiveMessage.Entry entry : body.getEntry()) {
