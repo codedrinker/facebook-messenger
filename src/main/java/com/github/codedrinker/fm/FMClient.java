@@ -104,20 +104,16 @@ public class FMClient {
 
     public void dispatch(String payload) {
         System.out.println("FMClient => dispatch " + payload);
-        logger.debug("debug FMClient => dispatch");
-        logger.info("info FMClient => dispatch");
-        logger.warn("warn FMClient => dispatch");
-        logger.error("error FMClient => dispatch");
 
         FMReceiveMessage body = JSON.parseObject(payload, FMReceiveMessage.class);
-        System.out.println(JSON.toJSONString(body));
+        logger.debug("FMClient => dispatch: body {}", body);
         for (FMReceiveMessage.Entry entry : body.getEntry()) {
             for (FMReceiveMessage.Messaging messaging : entry.getMessaging()) {
                 for (FMHandler fmHandler : getHandlers()) {
                     if (fmHandler.canHandle(messaging)) {
-                        if (logger.isDebugEnabled()) {
-                            logger.debug("dispatch to {} handler", fmHandler.getClass().getCanonicalName());
-                        }
+//                        if (logger.isDebugEnabled()) {
+                        logger.debug("dispatch to {} handler", fmHandler.getClass().getCanonicalName());
+//                        }
                         fmHandler.handle(messaging);
                         continue;
                     }
