@@ -6,7 +6,7 @@
 
     <groupId>com.github.codedrinker</groupId>
     <artifactId>facebook-messenger</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
     <name>Facebook Messenger API</name>
@@ -61,11 +61,11 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.23</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.slf4j</groupId>-->
+            <!--<artifactId>slf4j-log4j12</artifactId>-->
+            <!--<version>1.7.23</version>-->
+        <!--</dependency>-->
     </dependencies>
     <profiles>
         <profile>

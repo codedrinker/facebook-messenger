@@ -18,6 +18,8 @@ package com.github.codedrinker.fm.builder;
 import com.github.codedrinker.fm.entity.FMEnum;
 import com.github.codedrinker.fm.entity.FMSettingMessage;
 
+import java.util.ArrayList;
+
 public class FMCallToActionBuilder {
 
     private FMSettingMessage.CallToAction callToAction;
@@ -50,8 +52,23 @@ public class FMCallToActionBuilder {
         return this;
     }
 
-    public FMCallToActionBuilder withType(FMSettingMessage.CallActionType callActionType){
+    public FMCallToActionBuilder withType(FMSettingMessage.CallActionType callActionType) {
         this.callToAction.setType(callActionType);
+        return this;
+    }
+
+    /**
+     * 设置 嵌套 callToActions 用着 嵌套menu
+     */
+    public FMCallToActionBuilder withCallToAction(FMSettingMessage.CallToAction... callToActions) {
+        if (callToActions.length != 0) {
+            if (this.callToAction.getCall_to_actions() == null) {
+                this.callToAction.setCall_to_actions(new ArrayList<FMSettingMessage.CallToAction>());
+            }
+            for (FMSettingMessage.CallToAction callToAction : callToActions) {
+                this.callToAction.getCall_to_actions().add(callToAction);
+            }
+        }
         return this;
     }
 
