@@ -64,11 +64,10 @@ public class FMMenuItemBuilder {
      * 如果菜单项类型为 web_url 且 Messenger 功能插件 SDK 将在网页视图中使用，则该对象必须为 true
      * 可选参数
      */
-    public FMMenuItemBuilder withMessengerExtensions(boolean messenger_extensions) {
-        menuItem.setMessenger_extensions(messenger_extensions);
-        return this;
-    }
-
+//    public FMMenuItemBuilder withMessengerExtensions(boolean messenger_extensions) {
+//        menuItem.setMessenger_extensions(messenger_extensions);
+//        return this;
+//    }
     public FMMenuItemBuilder withMessengerExtensionsFallbackUrl(String fallbackUrl) {
         menuItem.setFallback_url(fallbackUrl);
         return this;
