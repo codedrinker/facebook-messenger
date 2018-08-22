@@ -129,8 +129,16 @@ public class FMClient {
         return FMProvider.sendMessage(message);
     }
 
+    /**
+     * @see #sendProfileSetting(FMProfileSettingMessage)
+     */
+    @Deprecated
     public FMResult sendSetting(FMSettingMessage message) {
         return FMProvider.sendSetting(message);
+    }
+
+    public FMResult sendProfileSetting(FMProfileSettingMessage message) {
+        return FMProvider.sendProfileSetting(message);
     }
 
     public FMUser getUserProfile(String id) {

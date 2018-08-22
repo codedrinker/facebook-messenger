@@ -20,6 +20,7 @@ import com.github.codedrinker.fm.entity.FMSettingMessage;
 
 import java.util.ArrayList;
 
+@Deprecated
 public class FMCallToActionBuilder {
 
     private FMSettingMessage.CallToAction callToAction;

@@ -19,7 +19,12 @@ import com.github.codedrinker.fm.entity.FMSettingMessage;
 
 import java.util.ArrayList;
 
+/**
+ * @see com.github.codedrinker.fm.entity.FMProfileSettingMessage
+ */
+@Deprecated
 public class FMSettingMessageBuilder {
+
 
     private FMSettingMessage fmSettingMessage;
 

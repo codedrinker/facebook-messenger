@@ -17,10 +17,7 @@ package com.github.codedrinker.fm.provider;
 
 import com.alibaba.fastjson.JSON;
 import com.github.codedrinker.fm.FMClient;
-import com.github.codedrinker.fm.entity.FMReplyMessage;
-import com.github.codedrinker.fm.entity.FMResult;
-import com.github.codedrinker.fm.entity.FMSettingMessage;
-import com.github.codedrinker.fm.entity.FMUser;
+import com.github.codedrinker.fm.entity.*;
 import com.github.codedrinker.fm.exception.AccessTokenUndefinedException;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -56,9 +53,29 @@ public class FMProvider {
         return fmpResult;
     }
 
+    /**
+     * Messenger 配置 API 改为 messenger_profile
+     *
+     * @param message
+     * @see #sendProfileSetting(FMProfileSettingMessage)
+     */
+    @Deprecated
     public static FMResult sendSetting(FMSettingMessage message) {
         logger.info("FMProvider => sendSetting message= {} ", JSON.toJSONString(message));
         String URL = String.format("https://graph.facebook.com/v2.6/me/thread_settings?access_token=%s", getAccessToken());
+        String string = JSON.toJSONString(message);
+        FMResult fmpResult = post(URL, string);
+        FMClient.getInstance().getFmResultAspect().handle(fmpResult);
+        return fmpResult;
+    }
+
+    /**
+     * 配置Messenger Profile，例如 Persistent Menu，Get Started Button，Welcome Page ...
+     * 该API 调用 限制频率不超过 每10分钟 10次
+     */
+    public static FMResult sendProfileSetting(FMProfileSettingMessage message) {
+        logger.info("FMProvider => sendProfileSetting message= {} ", JSON.toJSONString(message));
+        String URL = String.format("https://graph.facebook.com/v2.6/me/messenger_profile?access_token=%s", getAccessToken());
         String string = JSON.toJSONString(message);
         FMResult fmpResult = post(URL, string);
         FMClient.getInstance().getFmResultAspect().handle(fmpResult);

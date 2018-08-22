@@ -17,6 +17,10 @@ package com.github.codedrinker.fm.entity;
 
 import java.util.List;
 
+/**
+ * @see FMProfileSettingMessage
+ */
+@Deprecated
 public class FMSettingMessage {
     private SettingType setting_type;
     private Greeting greeting;
@@ -55,6 +59,7 @@ public class FMSettingMessage {
         this.call_to_actions = call_to_actions;
     }
 
+    @Deprecated
     public static class CallToAction {
 
         private String payload;
@@ -149,6 +154,7 @@ public class FMSettingMessage {
         }
     }
 
+    @Deprecated
     public static class Greeting {
         private String text;
 
@@ -162,12 +168,14 @@ public class FMSettingMessage {
 
     }
 
+    @Deprecated
     public enum SettingType {
         domain_whitelisting,
         greeting,
         call_to_actions //get started
     }
 
+    @Deprecated
     public enum CallActionType {
         postback,
         web_url,
@@ -177,6 +185,7 @@ public class FMSettingMessage {
         nested
     }
 
+    @Deprecated
     public enum ThreadState {
         new_thread, existing_thread
     }
