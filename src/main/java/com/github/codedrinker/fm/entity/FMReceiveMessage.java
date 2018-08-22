@@ -71,8 +71,10 @@ public class FMReceiveMessage {
          */
         public List<Messaging> getMessaging() {
             if (messaging != null) {
+                System.out.println("Entry => messaging =>" + messaging);
                 return messaging;
             }
+            System.out.println("Entry => standby =>" + standby);
             return standby;
         }
 
