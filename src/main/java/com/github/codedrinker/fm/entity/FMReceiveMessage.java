@@ -44,6 +44,11 @@ public class FMReceiveMessage {
         private String id;
         private long time;
         private List<Messaging> messaging;
+        /**
+         * https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/standby
+         * 备用 信息通道，不同于 messaging
+         */
+        private List<Messaging> standby;
 
         public String getId() {
             return id;
@@ -61,8 +66,14 @@ public class FMReceiveMessage {
             this.time = time;
         }
 
+        /**
+         * 通过正常 messaging 字段获取消息。如果不存在，尝试通过备用通道获取
+         */
         public List<Messaging> getMessaging() {
-            return messaging;
+            if (messaging != null) {
+                return messaging;
+            }
+            return standby;
         }
 
         public void setMessaging(List<Messaging> messaging) {
@@ -259,6 +270,7 @@ public class FMReceiveMessage {
             private String text;
             private QuickReply quick_reply;
             private List<Attachment> attachments;
+
             public Boolean getIs_echo() {
                 return is_echo;
             }
