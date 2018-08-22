@@ -57,6 +57,7 @@ public class FMProvider {
     }
 
     public static FMResult sendSetting(FMSettingMessage message) {
+        logger.info("FMProvider => sendSetting message= {} ", JSON.toJSONString(message));
         String URL = String.format("https://graph.facebook.com/v2.6/me/thread_settings?access_token=%s", getAccessToken());
         String string = JSON.toJSONString(message);
         FMResult fmpResult = post(URL, string);
