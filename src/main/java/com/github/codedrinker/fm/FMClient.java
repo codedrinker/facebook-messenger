@@ -112,6 +112,7 @@ public class FMClient {
                 for (FMHandler fmHandler : getHandlers()) {
                     if (fmHandler.canHandle(messaging)) {
 //                        if (logger.isDebugEnabled()) {
+                        System.out.println("dispatch to handler: " + fmHandler.getClass().getCanonicalName());
                         logger.debug("dispatch to {} handler", fmHandler.getClass().getCanonicalName());
 //                        }
                         fmHandler.handle(messaging);
