@@ -75,7 +75,7 @@ public class FMProfileSettingMessage {
          * 设置为 true 时，禁用 Messenger 编写工具。也就是说，用户只能通过固定菜单、回传、按钮和网页视图与您的智能助手互动。
          * 默认 false
          */
-        private boolean composer_input_disabled = true;
+        private boolean composer_input_disabled;
 
         /**
          * 固定菜单的顶层菜单项组成的数组
@@ -266,7 +266,7 @@ public class FMProfileSettingMessage {
         /**
          * 将以 messaging_postbacks 事件的形式发回给 Webhook 的数据。如果类型为 postback，则必须提供。不超过 1000 个字符
          */
-        private String payload;
+        public String payload;
 
         public Payload() {
         }
