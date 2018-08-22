@@ -106,7 +106,7 @@ public class FMClient {
         System.out.println("FMClient => dispatch " + payload);
 
         FMReceiveMessage body = JSON.parseObject(payload, FMReceiveMessage.class);
-        logger.info("FMClient => dispatch: body {}", body);
+        logger.info("FMClient => dispatch: body {}", JSON.toJSONString(body));
         for (FMReceiveMessage.Entry entry : body.getEntry()) {
             for (FMReceiveMessage.Messaging messaging : entry.getMessaging()) {
                 for (FMHandler fmHandler : getHandlers()) {
