@@ -27,16 +27,12 @@ public class FMProfileSettingMessengeBuilder {
     /**
      * 如果设置多个，请保证 locale 不一样
      */
-    public FMProfileSettingMessengeBuilder withGreeting(String... greets) {
-        if (greets != null && greets.length > 0) {
-            List<Greeting> greetingList = new ArrayList<Greeting>();
-            for (String greet : greets) {
-                Greeting greeting = new Greeting();
-                greeting.setText(greet);
-                greetingList.add(greeting);
-            }
-            this.profileSettingMessage.setGreeting(greetingList);
-        }
+    public FMProfileSettingMessengeBuilder withGreeting(String greet) {
+        List<Greeting> greetingList = new ArrayList<Greeting>();
+        Greeting greeting = new Greeting();
+        greeting.setText(greet);
+        greetingList.add(greeting);
+        this.profileSettingMessage.setGreeting(greetingList);
         return this;
     }
 
