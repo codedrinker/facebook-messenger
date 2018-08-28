@@ -191,7 +191,7 @@ public class FMProfileSettingMessage {
             this.webview_height_ratio = webview_height_ratio;
         }
 
-        public boolean isMessenger_extensions() {
+        public Boolean isMessenger_extensions() {
             return messenger_extensions;
         }
 
