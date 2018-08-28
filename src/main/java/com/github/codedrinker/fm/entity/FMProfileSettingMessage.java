@@ -134,7 +134,7 @@ public class FMProfileSettingMessage {
          * 如果菜单项类型为 web_url 且 Messenger 功能插件 SDK 将在网页视图中使用，则该对象必须为 true
          * 可选参数
          */
-//        private boolean messenger_extensions;
+        private Boolean messenger_extensions;
 
         /**
          * 可选参数
@@ -191,13 +191,13 @@ public class FMProfileSettingMessage {
             this.webview_height_ratio = webview_height_ratio;
         }
 
-//        public boolean isMessenger_extensions() {
-//            return messenger_extensions;
-//        }
-//
-//        public void setMessenger_extensions(boolean messenger_extensions) {
-//            this.messenger_extensions = messenger_extensions;
-//        }
+        public boolean isMessenger_extensions() {
+            return messenger_extensions;
+        }
+
+        public void setMessenger_extensions(boolean messenger_extensions) {
+            this.messenger_extensions = messenger_extensions;
+        }
 
         public String getFallback_url() {
             return fallback_url;
