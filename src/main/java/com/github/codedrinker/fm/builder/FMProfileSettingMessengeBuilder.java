@@ -25,7 +25,8 @@ public class FMProfileSettingMessengeBuilder {
     }
 
     /**
-     * 如果设置多个，请保证 locale 不一样
+     * 如果设置多个，请保证 locale 不一样.
+     * 注意 字符不要超过160个
      */
     public FMProfileSettingMessengeBuilder withGreeting(String greet) {
         List<Greeting> greetingList = new ArrayList<Greeting>();
