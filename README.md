@@ -5,11 +5,24 @@ A most easily usable Facebook Messenger Platform API
 ### 中文接入文档
 [中文文档](readme_zh_CN.md)  
 ### Add the maven dependency
+
+Add repository  
+
+```xml
+<repositories>
+    <repository>
+            <id>jitpack.io</id>
+            <url>https://www.jitpack.io</url>
+</repository>
+</repositories>
+```
+Add dependency  
+
 ```xml
 <dependency>
-  <groupId>com.github.codedrinker</groupId>
+  <groupId>com.github.gerenvip</groupId>
   <artifactId>facebook-messenger</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.2</version>
 </dependency>
 ```
 ### Start with FMClient instance, get FMClient instance in FMClicent.getInstance().
