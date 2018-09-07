@@ -40,7 +40,7 @@ public class HttpClientHelper {
 
         Response response = client.newCall(request).execute();
         if (response.body() != null) {
-            return response.body().toString();
+            return response.body().string();
         }
         throw new EmptyResponseException();
     }
@@ -103,7 +103,7 @@ public class HttpClientHelper {
                 .build();
         Response response = client.newCall(request).execute();
         if (response.body() != null) {
-            return response.body().toString();
+            return response.body().string();
         }
         throw new EmptyResponseException();
     }
