@@ -6,7 +6,7 @@
 
     <groupId>com.github.codedrinker</groupId>
     <artifactId>facebook-messenger</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <packaging>jar</packaging>
 
     <name>Facebook Messenger API</name>
