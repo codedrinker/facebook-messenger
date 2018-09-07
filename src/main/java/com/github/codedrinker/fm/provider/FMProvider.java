@@ -94,6 +94,7 @@ public class FMProvider {
         OkHttpClient client = HttpClientHelper.createClient().build();
         try {
             String result = HttpClientHelper.postSync(client, url, string);
+            logger.info("postSync, result -> {}", result);
             FMResult fmpResult = JSON.parseObject(result, FMResult.class);
             logger.info("post url -> {}, string -> {}, result -> {}", url, string, result);
             return fmpResult;
