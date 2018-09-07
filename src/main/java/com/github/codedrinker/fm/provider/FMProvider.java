@@ -19,17 +19,12 @@ import com.alibaba.fastjson.JSON;
 import com.github.codedrinker.fm.FMClient;
 import com.github.codedrinker.fm.entity.*;
 import com.github.codedrinker.fm.exception.AccessTokenUndefinedException;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
+import com.github.codedrinker.fm.net.HttpClientHelper;
+import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 
 public class FMProvider {
     final static Logger logger = LoggerFactory.getLogger(FMProvider.class);
@@ -84,35 +79,28 @@ public class FMProvider {
 
     public static FMUser getUserProfile(String id) {
         String URL = String.format("https://graph.facebook.com/v2.6/%s?access_token=%s", id, getAccessToken());
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpGet httpGet = new HttpGet(URL);
-        httpGet.getMethod();
+
         try {
-            HttpResponse response = httpClient.execute(httpGet);
-            String result = EntityUtils.toString(response.getEntity());
+            String result = HttpClientHelper.getSync(URL);
             FMUser user = JSON.parseObject(result, FMUser.class);
             return user;
-        } catch (Exception e) {
-            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return null;
     }
 
     private static FMResult post(String url, String string) {
-        HttpResponse res;
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpPost post = new HttpPost(url);
+        OkHttpClient client = HttpClientHelper.createClient().build();
         try {
-            StringEntity params = new StringEntity(string, StandardCharsets.UTF_8);
-            params.setContentEncoding("UTF-8");
-            params.setContentType("application/json");
-            post.setEntity(params);
-            res = httpClient.execute(post);
-            String result = EntityUtils.toString(res.getEntity());
+            String result = HttpClientHelper.postSync(client, url, string);
             FMResult fmpResult = JSON.parseObject(result, FMResult.class);
+            logger.info("post url -> {}, string -> {}, result -> {}", url, string, result);
             return fmpResult;
-        } catch (Exception e) {
+        } catch (IOException e) {
+            e.printStackTrace();
             logger.error("Request Facebook Message API error with url : {}", url, e);
-            return null;
         }
+        return null;
     }
 }
