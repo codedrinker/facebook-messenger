@@ -17,8 +17,5 @@ package com.github.codedrinker.fm.handler;
 
 import com.github.codedrinker.fm.entity.FMReceiveMessage;
 
-public interface FMHandler {
-    boolean canHandle(FMReceiveMessage.Messaging message);
-
-    void handle(FMReceiveMessage.Messaging message);
+public interface FMHandler extends IHandler<FMReceiveMessage.Messaging> {
 }

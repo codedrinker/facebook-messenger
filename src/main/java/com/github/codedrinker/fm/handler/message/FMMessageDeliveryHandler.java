@@ -13,18 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.codedrinker.fm.handler;
+package com.github.codedrinker.fm.handler.message;
 
 import com.github.codedrinker.fm.entity.FMReceiveMessage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.github.codedrinker.fm.handler.FMHandler;
 
-public class FMDefaultMessagePostBackHandler extends FMMessagePostBackHandler {
-    Logger logger = LoggerFactory.getLogger(FMDefaultMessagePostBackHandler.class);
-
-    public void handle(FMReceiveMessage.Messaging message) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("dispatch into default message postback handler, message : {}", message);
-        }
+public abstract class FMMessageDeliveryHandler implements FMHandler {
+    public boolean canHandle(FMReceiveMessage.Messaging message) {
+        return message != null && message.getDelivery() != null;
     }
 }

@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.codedrinker.fm.handler;
+package com.github.codedrinker.fm.handler.message;
 
 import com.github.codedrinker.fm.entity.FMReceiveMessage;
+import com.github.codedrinker.fm.handler.FMHandler;
 
-public abstract class FMMessageHandler implements FMHandler {
+public abstract class FMMessageReadHandler implements FMHandler {
     public boolean canHandle(FMReceiveMessage.Messaging message) {
-        return message != null && message.getMessage() != null;
+        return message != null && message.getRead() != null;
     }
 }

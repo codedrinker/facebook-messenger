@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.codedrinker.fm.handler;
+package com.github.codedrinker.fm.handler.message.builtin;
 
 import com.github.codedrinker.fm.entity.FMReceiveMessage;
+import com.github.codedrinker.fm.handler.message.FMMessageHandler;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

@@ -16,57 +16,31 @@
 package com.github.codedrinker.fm.entity;
 
 import com.alibaba.fastjson.JSON;
+import lombok.Data;
 
 import java.util.List;
 
+@Data
 public class FMReceiveMessage {
 
     private String object;
 
     private List<Entry> entry;
 
-    public String getObject() {
-        return object;
-    }
-
-    public void setObject(String object) {
-        this.object = object;
-    }
-
-    public List<Entry> getEntry() {
-        return entry;
-    }
-
-    public void setEntry(List<Entry> entry) {
-        this.entry = entry;
-    }
-
+    @Data
     public static class Entry {
 
         private String id;
         private long time;
+        private String uid;
+        private List<Change> changes;
+        private List<Change> changed_fields;//change 只有 field 字段有内容
         private List<Messaging> messaging;
         /**
          * https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/standby
          * 备用 信息通道，不同于 messaging
          */
         private List<Messaging> standby;
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public long getTime() {
-            return time;
-        }
-
-        public void setTime(long time) {
-            this.time = time;
-        }
 
         /**
          * 通过正常 messaging 字段获取消息。如果不存在，尝试通过备用通道获取
@@ -79,16 +53,18 @@ public class FMReceiveMessage {
             System.out.println("Entry => standby =>" + JSON.toJSONString(standby));
             return standby;
         }
-
-        public void setMessaging(List<Messaging> messaging) {
-            this.messaging = messaging;
-        }
-
-        public void setStandby(List<Messaging> standby) {
-            this.standby = standby;
-        }
     }
 
+    /**
+     * 用于记录 订阅的内容变化情况
+     */
+    @Data
+    public static class Change {
+        public String field;//变化的字段
+        public String value;//变化的字段值
+    }
+
+    @Data
     public static class Messaging {
 
         private Member sender;
@@ -100,174 +76,34 @@ public class FMReceiveMessage {
         private PostBack postback;
         private Referral referral;
 
-
-        public Member getSender() {
-            return sender;
-        }
-
-        public void setSender(Member sender) {
-            this.sender = sender;
-        }
-
-        public Member getRecipient() {
-            return recipient;
-        }
-
-        public void setRecipient(Member recipient) {
-            this.recipient = recipient;
-        }
-
-        public long getTimestamp() {
-            return timestamp;
-        }
-
-        public void setTimestamp(long timestamp) {
-            this.timestamp = timestamp;
-        }
-
-        public Message getMessage() {
-            return message;
-        }
-
-        public void setMessage(Message message) {
-            this.message = message;
-        }
-
-        public Delivery getDelivery() {
-            return delivery;
-        }
-
-        public void setDelivery(Delivery delivery) {
-            this.delivery = delivery;
-        }
-
-        public Read getRead() {
-            return read;
-        }
-
-        public void setRead(Read read) {
-            this.read = read;
-        }
-
-        public PostBack getPostback() {
-            return postback;
-        }
-
-        public void setPostback(PostBack postback) {
-            this.postback = postback;
-        }
-
-        public Referral getReferral() {
-            return referral;
-        }
-
-        public void setReferral(Referral referral) {
-            this.referral = referral;
-        }
-
+        @Data
         public static class Referral {
             private String ref;
             private String source;
             private String type;
-
-            public String getRef() {
-                return ref;
-            }
-
-            public void setRef(String ref) {
-                this.ref = ref;
-            }
-
-            public String getSource() {
-                return source;
-            }
-
-            public void setSource(String source) {
-                this.source = source;
-            }
-
-            public String getType() {
-                return type;
-            }
-
-            public void setType(String type) {
-                this.type = type;
-            }
         }
 
+        @Data
         public static class PostBack {
 
             private String payload;
             private Referral referral;
-
-            public String getPayload() {
-                return payload;
-            }
-
-            public void setPayload(String payload) {
-                this.payload = payload;
-            }
-
-            public Referral getReferral() {
-                return referral;
-            }
-
-            public void setReferral(Referral referral) {
-                this.referral = referral;
-            }
         }
 
+        @Data
         public static class Delivery {
             private List<String> mids;
             private long watermark;
             private long seq;
-
-            public List<String> getMids() {
-                return mids;
-            }
-
-            public void setMids(List<String> mids) {
-                this.mids = mids;
-            }
-
-            public long getWatermark() {
-                return watermark;
-            }
-
-            public void setWatermark(long watermark) {
-                this.watermark = watermark;
-            }
-
-            public long getSeq() {
-                return seq;
-            }
-
-            public void setSeq(long seq) {
-                this.seq = seq;
-            }
         }
 
+        @Data
         public static class Read {
             private long watermark;
             private long seq;
-
-            public long getWatermark() {
-                return watermark;
-            }
-
-            public void setWatermark(long watermark) {
-                this.watermark = watermark;
-            }
-
-            public long getSeq() {
-                return seq;
-            }
-
-            public void setSeq(long seq) {
-                this.seq = seq;
-            }
         }
 
+        @Data
         public static class Message {
             private Boolean is_echo;
             private String app_id;
@@ -279,70 +115,7 @@ public class FMReceiveMessage {
             private QuickReply quick_reply;
             private List<Attachment> attachments;
 
-            public Boolean getIs_echo() {
-                return is_echo;
-            }
-
-            public void setIs_echo(Boolean is_echo) {
-                this.is_echo = is_echo;
-            }
-
-            public String getApp_id() {
-                return app_id;
-            }
-
-            public void setApp_id(String app_id) {
-                this.app_id = app_id;
-            }
-
-            public String getMetadata() {
-                return metadata;
-            }
-
-            public void setMetadata(String metadata) {
-                this.metadata = metadata;
-            }
-
-            public String getMid() {
-                return mid;
-            }
-
-            public void setMid(String mid) {
-                this.mid = mid;
-            }
-
-            public Integer getSeq() {
-                return seq;
-            }
-
-            public void setSeq(Integer seq) {
-                this.seq = seq;
-            }
-
-            public String getText() {
-                return text;
-            }
-
-            public void setText(String text) {
-                this.text = text;
-            }
-
-            public QuickReply getQuick_reply() {
-                return quick_reply;
-            }
-
-            public void setQuick_reply(QuickReply quick_reply) {
-                this.quick_reply = quick_reply;
-            }
-
-            public List<Attachment> getAttachments() {
-                return attachments;
-            }
-
-            public void setAttachments(List<Attachment> attachments) {
-                this.attachments = attachments;
-            }
-
+            @Data
             public static class Attachment {
                 public String getTitle() {
                     return title;

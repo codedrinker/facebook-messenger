@@ -24,19 +24,20 @@ import com.github.codedrinker.fm.command.FMDefaultCommand;
 import com.github.codedrinker.fm.entity.*;
 import com.github.codedrinker.fm.exception.AccessSecretUndefinedException;
 import com.github.codedrinker.fm.handler.*;
+import com.github.codedrinker.fm.handler.message.*;
+import com.github.codedrinker.fm.handler.message.builtin.*;
 import com.github.codedrinker.fm.parser.FMCommandDefaultParser;
 import com.github.codedrinker.fm.parser.FMCommandParser;
 import com.github.codedrinker.fm.provider.FMProvider;
 import com.github.codedrinker.fm.utils.Signature;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class FMClient {
-    Logger logger = LoggerFactory.getLogger(FMClient.class);
 
     private FMCommandParser fmCommandParser;
     private boolean isCommandEnabled = false;
@@ -49,6 +50,8 @@ public class FMClient {
     private FMMessagePostBackHandler fmMessagePostBackHandler;
     private FMMessageReadHandler fmMessageReadHandler;
     private FMMessageReferralHandler fmMessageReferralHandler;
+
+    private List<FMSubscriptionChangeHandler> subscriptionChangeHandlers;
 
     private static FMClient client;
 
@@ -82,7 +85,7 @@ public class FMClient {
         this.fmMessageReferralHandler = new FMDefaultMessageReferralHandler();
     }
 
-    private List<FMHandler> getHandlers() {
+    private List<FMHandler> getMessagingHandlers() {
         List<FMHandler> handlers = new ArrayList<FMHandler>();
         if (this.fmMessageDeliveryHandler != null) {
             handlers.add(fmMessageDeliveryHandler);
@@ -102,28 +105,62 @@ public class FMClient {
         return handlers;
     }
 
+    private List<FMSubscriptionChangeHandler> getSubscriptionChangeHandlers() {
+        return subscriptionChangeHandlers;
+    }
+
     public void dispatch(String payload) {
-        System.out.println("FMClient => dispatch " + payload);
-
+        log.info("FMClient => dispatch payload:" + payload);
         FMReceiveMessage body = JSON.parseObject(payload, FMReceiveMessage.class);
-        logger.info("FMClient => dispatch: body {}", JSON.toJSONString(body));
+        log.info("FMClient => dispatch: convert to FMReceiveMessage: {}", JSON.toJSONString(body));
+        if (body == null) {
+            log.info("FMClient => dispatch，  Empty or Illegal payload");
+            return;
+        }
+        String object = body.getObject();
         for (FMReceiveMessage.Entry entry : body.getEntry()) {
-            for (FMReceiveMessage.Messaging messaging : entry.getMessaging()) {
-                for (FMHandler fmHandler : getHandlers()) {
-                    if (fmHandler.canHandle(messaging)) {
-//                        if (logger.isDebugEnabled()) {
-                        System.out.println("dispatch to handler: " + fmHandler.getClass().getCanonicalName());
-                        logger.info("dispatch to {} handler", fmHandler.getClass().getCanonicalName());
-//                        }
-                        fmHandler.handle(messaging);
-                        continue;
-                    }
-                }
+            if (entry.getMessaging() != null) {
+                handleMessaging(entry.getMessaging());
+            } else if (entry.getChanges() != null) {
+                handleChange(entry.getChanges(), object);
+            } else if (entry.getChanged_fields() != null) {
+                handleChange(entry.getChanged_fields(), object);
+            } else {
+                log.info("Unsupport entry -> {}", JSON.toJSONString(entry));
             }
-
         }
     }
 
+    private void handleChange(List<FMReceiveMessage.Change> changes, String object) {
+        if (changes == null) {
+            return;
+        }
+        for (FMReceiveMessage.Change change : changes) {
+            List<FMSubscriptionChangeHandler> changeHandlers = getSubscriptionChangeHandlers();
+            if (changeHandlers != null) {
+                for (FMSubscriptionChangeHandler handler : changeHandlers) {
+                    if (handler.canHandle(change, object)) {
+                        log.debug("handleChange find handler {} ", handler.getClass().getCanonicalName());
+                        handler.handle(change);
+                    }
+                }
+            }
+        }
+    }
+
+    private void handleMessaging(List<FMReceiveMessage.Messaging> messagings) {
+        if (messagings == null) {
+            return;
+        }
+        for (FMReceiveMessage.Messaging messaging : messagings) {
+            for (FMHandler fmHandler : getMessagingHandlers()) {
+                if (fmHandler.canHandle(messaging)) {
+                    log.debug("handleMessaging find handler {} ", fmHandler.getClass().getCanonicalName());
+                    fmHandler.handle(messaging);
+                }
+            }
+        }
+    }
 
     public FMResult sendMessage(FMReplyMessage message) {
         return FMProvider.sendMessage(message);
@@ -146,19 +183,15 @@ public class FMClient {
     }
 
     public boolean signature(String payload, String xHubSignature) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("payload is : {}", payload);
-            logger.debug("xHubSignature is : {}", xHubSignature);
-        }
+        log.debug("payload is : {}", payload);
+        log.debug("xHubSignature is : {}", xHubSignature);
         if (this.accessSecret == null) {
             throw new AccessSecretUndefinedException();
         }
 
         String decodePayload = Signature.decode(payload, this.accessSecret);
         boolean signature = StringUtils.equals(decodePayload, xHubSignature);
-        if (logger.isDebugEnabled()) {
-            logger.debug("decode palyload signature is : {}, signature result is : {}", decodePayload, signature);
-        }
+        log.debug("decode palyload signature is : {}, signature result is : {}", decodePayload, signature);
         return signature;
     }
 
@@ -191,6 +224,16 @@ public class FMClient {
 
     public FMClient withFmMessageReferralHandler(FMMessageReferralHandler fmMessageReferralHandler) {
         this.fmMessageReferralHandler = fmMessageReferralHandler;
+        return this;
+    }
+
+    public FMClient withSubscribeChangeHandler(FMSubscriptionChangeHandler handler) {
+        if (subscriptionChangeHandlers == null) {
+            subscriptionChangeHandlers = new ArrayList<FMSubscriptionChangeHandler>();
+        }
+        if (!subscriptionChangeHandlers.contains(handler)) {
+            subscriptionChangeHandlers.add(handler);
+        }
         return this;
     }
 

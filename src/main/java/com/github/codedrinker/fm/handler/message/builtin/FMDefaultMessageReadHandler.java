@@ -13,18 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.codedrinker.fm.handler;
+package com.github.codedrinker.fm.handler.message.builtin;
 
 import com.github.codedrinker.fm.entity.FMReceiveMessage;
+import com.github.codedrinker.fm.handler.message.FMMessageReadHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class FMDefaultMessageReferralHandler extends FMMessageReferralHandler {
-    Logger logger = LoggerFactory.getLogger(FMDefaultMessageReferralHandler.class);
+public class FMDefaultMessageReadHandler extends FMMessageReadHandler {
+    Logger logger = LoggerFactory.getLogger(FMDefaultMessageReadHandler.class);
 
     public void handle(FMReceiveMessage.Messaging message) {
         if (logger.isDebugEnabled()) {
-            logger.debug("dispatch into default message referral handler, message : {}", message);
+            logger.debug("dispatch into default message read handler, message : {}", message);
         }
     }
 }
