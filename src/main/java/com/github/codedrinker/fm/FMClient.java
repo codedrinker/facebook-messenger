@@ -202,26 +202,61 @@ public class FMClient {
         return this;
     }
 
+    /**
+     * 用于处理 "message_deliveries"类型的 Webhook Event。
+     * <br/>
+     * 消息送达后 Messenger 平台将会产生一个 送达的 事件
+     *
+     * @param fmMessageDeliveryHandler {@link FMMessageDeliveryHandler}
+     * @return FMClient
+     */
     public FMClient withFmMessageDeliveryHandler(FMMessageDeliveryHandler fmMessageDeliveryHandler) {
         this.fmMessageDeliveryHandler = fmMessageDeliveryHandler;
         return this;
     }
 
+    /**
+     * 用于处理 “messages” 类型的 Webhook Event。
+     * <br/>
+     * 当用户给 Messenger 机器人绑定的 Facebook Page上发送了 一个消息，会触发该 Webhook Event，并携带消息体，
+     * 消息可能是 文本消息，也可能是一个带附件的消息，比如 模板消息，图片，音频，视频，文件等等。
+     *
+     * @param fmMessageHandler {@link FMMessageHandler}
+     * @return FMClient
+     */
     public FMClient withFmMessageHandler(FMMessageHandler fmMessageHandler) {
         this.fmMessageHandler = fmMessageHandler;
         return this;
     }
 
+    /**
+     * 用于处理 “messaging_postbacks” 类型的 Webhook Event。
+     *
+     * @param fmMessagePostBackHandler {@link FMMessagePostBackHandler}
+     * @return FMClient
+     */
     public FMClient withFmMessagePostBackHandler(FMMessagePostBackHandler fmMessagePostBackHandler) {
         this.fmMessagePostBackHandler = fmMessagePostBackHandler;
         return this;
     }
 
+    /**
+     * 用于处理 “message_reads” 类型的 Webhook Event。
+     *
+     * @param fmMessageReadHandler {@link FMMessageReadHandler}
+     * @return FMClient
+     */
     public FMClient withFmMessageReadHandler(FMMessageReadHandler fmMessageReadHandler) {
         this.fmMessageReadHandler = fmMessageReadHandler;
         return this;
     }
 
+    /**
+     * 用于处理 “messaging_referrals” 类型的 Webhook Event。
+     *
+     * @param fmMessageReferralHandler {@link FMMessageReferralHandler}
+     * @return FMClient
+     */
     public FMClient withFmMessageReferralHandler(FMMessageReferralHandler fmMessageReferralHandler) {
         this.fmMessageReferralHandler = fmMessageReferralHandler;
         return this;

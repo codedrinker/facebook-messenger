@@ -18,7 +18,29 @@ package com.github.codedrinker.fm.handler.message;
 import com.github.codedrinker.fm.entity.FMReceiveMessage;
 import com.github.codedrinker.fm.handler.FMHandler;
 
+/**
+ * 当用户阅读了 发送给他(她)的Page 消息后，会发送 message_reads Webbook Event
+ * <br/>
+ *
+ * @see <a href="https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/message-reads"/>message_reads webhook Event</a>
+ */
 public abstract class FMMessageReadHandler implements FMHandler {
+    /**
+     * @param message {
+     *                "sender":{
+     *                "id":"<PSID>"
+     *                },
+     *                "recipient":{
+     *                "id":"<PAGE_ID>"
+     *                },
+     *                "timestamp":1458668856463,
+     *                "read":{
+     *                "watermark":1458668856253,
+     *                "seq":38
+     *                }
+     *                }
+     * @return whether message_reads webhook event
+     */
     public boolean canHandle(FMReceiveMessage.Messaging message) {
         return message != null && message.getRead() != null;
     }

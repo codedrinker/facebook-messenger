@@ -62,6 +62,13 @@ public class FMCommandDefaultParser implements FMCommandParser {
         }
     }
 
+    /**
+     * split with symbol "_"
+     *
+     * @param source    keywords payload
+     * @param arguments some arguments
+     * @return renamed Command Name
+     */
     public String print(String source, String... arguments) {
         String join = Joiner.on("_").join(arguments);
         if (StringUtils.isNotBlank(join)) {

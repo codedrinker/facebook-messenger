@@ -18,7 +18,35 @@ package com.github.codedrinker.fm.handler.message;
 import com.github.codedrinker.fm.entity.FMReceiveMessage;
 import com.github.codedrinker.fm.handler.FMHandler;
 
+/**
+ * 用户触发 “回传"按钮，“马上开始"按钮，或者固定菜单时，Messenger 平台会发送 messaging_postbacks 类型的 webhook Event
+ * <br/>
+ *
+ * @see <a href="https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/messaging_postbacks"/>messaging_postbacks webhook Event</a>
+ */
 public abstract class FMMessagePostBackHandler implements FMHandler {
+
+    /**
+     * @param message {
+     *                "sender":{
+     *                "id":"<PSID>"
+     *                },
+     *                "recipient":{
+     *                "id":"<PAGE_ID>"
+     *                },
+     *                "timestamp":1458692752478,
+     *                "postback":{
+     *                "title": "<TITLE_FOR_THE_CTA>",
+     *                "payload": "<USER_DEFINED_PAYLOAD>",
+     *                "referral": {
+     *                "ref": "<USER_DEFINED_REFERRAL_PARAM>",
+     *                "source": "<SHORTLINK>",
+     *                "type": "OPEN_THREAD",
+     *                }
+     *                }
+     *                }
+     * @return whether messaging_postbacks webhook event
+     */
     public boolean canHandle(FMReceiveMessage.Messaging message) {
         return message != null && message.getPostback() != null;
     }
