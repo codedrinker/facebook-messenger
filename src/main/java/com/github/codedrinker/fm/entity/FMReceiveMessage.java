@@ -34,7 +34,7 @@ public class FMReceiveMessage {
         private long time;
         private String uid;
         private List<Change> changes;
-        private List<Change> changed_fields;//change 只有 field 字段有内容
+        private List<String> changed_fields;//change 只有 field 字段有内容
         private List<Messaging> messaging;
         /**
          * https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/standby
@@ -56,12 +56,23 @@ public class FMReceiveMessage {
     }
 
     /**
-     * 用于记录 订阅的内容变化情况
+     * 用于记录 绑定的 Facebook Page 或者 User，Application，Instagram 等等域 的一些配置字段的变化。<br/>
+     * 只要在 开发者后台的 Webhook 配置中订阅 的字段 ，当这些字段发生变化时，才能收到该 数据。
+     * <br/>
+     * 例如:
+     * <br/>
+     * 订阅了 Facebook Page 的 email 字段，当有管理员修改了 Facebook page 上的 email 时， Messenger Bold 就会 收到该消息
      */
     @Data
     public static class Change {
         public String field;//变化的字段
         public String value;//变化的字段值
+
+        public static Change emptyValue(String field) {
+            Change change = new Change();
+            change.field = field;
+            return change;
+        }
     }
 
     @Data

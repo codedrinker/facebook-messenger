@@ -26,7 +26,7 @@ import com.github.codedrinker.fm.exception.AccessSecretUndefinedException;
 import com.github.codedrinker.fm.handler.*;
 import com.github.codedrinker.fm.handler.message.*;
 import com.github.codedrinker.fm.handler.message.builtin.*;
-import com.github.codedrinker.fm.parser.FMCommandDefaultParser;
+import com.github.codedrinker.fm.parser.builtin.FMCommandDefaultParser;
 import com.github.codedrinker.fm.parser.FMCommandParser;
 import com.github.codedrinker.fm.provider.FMProvider;
 import com.github.codedrinker.fm.utils.Signature;
@@ -40,7 +40,6 @@ import java.util.List;
 public class FMClient {
 
     private FMCommandParser fmCommandParser;
-    private boolean isCommandEnabled = false;
     private String accessToken;
     private String accessSecret;
     private FMResultAspect fmResultAspect;
@@ -58,6 +57,7 @@ public class FMClient {
     private FMClient() {
         this.fmResultAspect = new FMDefaultResultAspect();
         setDefaultHandler();
+        setDefaultCommand();
     }
 
     public static FMClient getInstance() {
@@ -67,10 +67,26 @@ public class FMClient {
         return client;
     }
 
-    public void enableCommand() {
-        this.isCommandEnabled = true;
-        this.fmCommandParser = new FMCommandDefaultParser();
-        setDefaultCommand();
+    /**
+     * check config state
+     */
+    private void checkConfigured() {
+        if (StringUtils.isEmpty(accessSecret) || StringUtils.isEmpty(accessToken)) {
+            throw new IllegalStateException("you must call config(accessSecret,accessToken) first");
+        }
+    }
+
+    /**
+     * 配置 FMClient
+     *
+     * @param accessSecret accessSecret 在 Facebook 开发者后台的 对应 App 设置中 查看 应用密钥
+     * @param accessToken  在 Facebook 开发者后台 获取 Facebook Page 的 accessToken
+     * @return FMClient
+     */
+    public FMClient config(String accessSecret, String accessToken) {
+        this.accessSecret = accessSecret;
+        this.accessToken = accessToken;
+        return this;
     }
 
     private void setDefaultCommand() {
@@ -109,6 +125,11 @@ public class FMClient {
         return subscriptionChangeHandlers;
     }
 
+    /**
+     * 核心分发 payload，找到对应的 {@link FMHandler} 来处理消息
+     *
+     * @param payload 有效消息负载
+     */
     public void dispatch(String payload) {
         log.info("FMClient => dispatch payload:" + payload);
         FMReceiveMessage body = JSON.parseObject(payload, FMReceiveMessage.class);
@@ -124,7 +145,7 @@ public class FMClient {
             } else if (entry.getChanges() != null) {
                 handleChange(entry.getChanges(), object);
             } else if (entry.getChanged_fields() != null) {
-                handleChange(entry.getChanged_fields(), object);
+                handleChangeFiled(entry.getChanged_fields(), object);
             } else {
                 log.info("Unsupport entry -> {}", JSON.toJSONString(entry));
             }
@@ -141,6 +162,24 @@ public class FMClient {
                 for (FMSubscriptionChangeHandler handler : changeHandlers) {
                     if (handler.canHandle(change, object)) {
                         log.debug("handleChange find handler {} ", handler.getClass().getCanonicalName());
+                        handler.handle(change);
+                    }
+                }
+            }
+        }
+    }
+
+    private void handleChangeFiled(List<String> changeFileds, String object) {
+        if (changeFileds == null) {
+            return;
+        }
+        for (String changeFiled : changeFileds) {
+            List<FMSubscriptionChangeHandler> changeHandlers = getSubscriptionChangeHandlers();
+            if (changeHandlers != null) {
+                for (FMSubscriptionChangeHandler handler : changeHandlers) {
+                    FMReceiveMessage.Change change = FMReceiveMessage.Change.emptyValue(changeFiled);
+                    if (handler.canHandle(change, object)) {
+                        log.debug("handleChangeFiled find handler {} ", handler.getClass().getCanonicalName());
                         handler.handle(change);
                     }
                 }
@@ -262,6 +301,15 @@ public class FMClient {
         return this;
     }
 
+    /**
+     * 用于处理 Messenger Bold 主动订阅的 一些域的字段的变化情况。<br/>
+     * 例如:<br/>
+     * 在 Facebook 应用开发后台上配置了 Webhook ，并订阅了 Facebook Page 的email字段。当有管理员修改了Facebook Page 上的 email 后，
+     * Messenger Bold 就会收到变化信息；而该方法就是来处理这个事件的。
+     *
+     * @param handler {@link FMSubscriptionChangeHandler}
+     * @return FMClient
+     */
     public FMClient withSubscribeChangeHandler(FMSubscriptionChangeHandler handler) {
         if (subscriptionChangeHandlers == null) {
             subscriptionChangeHandlers = new ArrayList<FMSubscriptionChangeHandler>();
@@ -276,34 +324,74 @@ public class FMClient {
         return fmResultAspect;
     }
 
+    /**
+     * 用于处理 所有与 Messenger Platform API 交互的响应结果。
+     *
+     * @param fmResultAspect 与 Messenger Platform API 交互的响应结果
+     * @return FMClient
+     */
     public FMClient withFmResultAspect(FMResultAspect fmResultAspect) {
         this.fmResultAspect = fmResultAspect;
         return this;
     }
 
     public String getAccessToken() {
+        checkConfigured();
         return accessToken;
     }
 
+    /**
+     * 配置 accessToken
+     *
+     * @param accessToken 在 Facebook 开发者后台 获取 Facebook Page 的 accessToken
+     * @return FMClient
+     * @see #config(String, String)
+     * @deprecated
+     */
+    @Deprecated
     public FMClient withAccessToken(String accessToken) {
         this.accessToken = accessToken;
         return this;
     }
 
+    /**
+     * 获取已经配置的 AccessSecret
+     */
     public String getAccessSecret() {
+        checkConfigured();
         return accessSecret;
     }
 
+    /**
+     * 配置 accessSecret
+     *
+     * @param accessSecret 在 Facebook 开发者后台的 对应 App 设置中 查看 应用密钥
+     * @return FMClient
+     * @see #config(String, String)
+     * @deprecated
+     */
+    @Deprecated
     public FMClient withAccessSecret(String accessSecret) {
         this.accessSecret = accessSecret;
         return this;
     }
 
+    /**
+     * 获取配置的默认 Command 解析器
+     *
+     * @return {@link FMCommandParser}
+     */
     public FMCommandParser getFmCommandParser() {
         return this.fmCommandParser != null ? this.fmCommandParser : new FMCommandDefaultParser();
     }
 
-    public FMClient withFMCommandParser(FMCommandParser fmCommandParser) {
+    /**
+     * 注册 默认的 Command 解析器
+     *
+     * @param fmCommandParser {@link FMCommandParser}
+     * @return FMClient
+     */
+    public FMClient registerFMCommandParser(FMCommandParser fmCommandParser) {
         this.fmCommandParser = fmCommandParser;
         return this;
     }

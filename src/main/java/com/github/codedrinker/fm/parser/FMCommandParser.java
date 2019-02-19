@@ -15,18 +15,39 @@
  */
 package com.github.codedrinker.fm.parser;
 
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * Command 解析器 通用接口, 通过消息中的有效载体，生成 Command 的解析器。
+ */
 public interface FMCommandParser {
-    String name = null;
-    List<String> params = new ArrayList<String>();
 
+    /**
+     * @return Command Name
+     */
     String getName();
 
+    /**
+     * @return Command Params
+     */
     String[] getParams();
 
+    /**
+     * 解析payload 字段，与{@link #print(String, String...)} 的编码操作相对应;
+     * <br/>
+     * 根据 payload 生成 Command 的解析器
+     *
+     * @param payload 消息有效载体
+     * @return 解析器
+     */
     FMCommandParser parse(String payload);
 
+    /**
+     * 根据 特定的编码规则，将 Command 的 Name 和 Params 编码成 有效的消息载体
+     * <br/>
+     * <strong>注意:</strong> 使用 的编码规则和要解码规则配对，保证 通过{@link #parse(String)}解析方法能还原 Command Name 和 Command Params
+     *
+     * @param name   Command Name
+     * @param params Command Params
+     * @return 编码后的有效消息载体
+     */
     String print(String name, String... params);
 }

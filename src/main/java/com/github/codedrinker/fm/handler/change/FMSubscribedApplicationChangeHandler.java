@@ -5,6 +5,9 @@ import com.github.codedrinker.fm.handler.FMSubscriptionChangeHandler;
 import org.apache.commons.lang3.StringUtils;
 
 /**
+ * 在 Facebook 应用后台 Webhook 配置时，如果订阅了 Application 的变化。当 Application 的 一些配置字段发生变化时，就会触发 change 类型的 Webhook Event
+ * <br/>
+ *
  * @author wangwei on 2018/9/27.
  * wangwei@jiandaola.com
  */
