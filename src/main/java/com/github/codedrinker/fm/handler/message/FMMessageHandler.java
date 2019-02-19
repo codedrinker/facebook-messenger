@@ -15,8 +15,13 @@
  */
 package com.github.codedrinker.fm.handler.message;
 
+import com.alibaba.fastjson.JSON;
 import com.github.codedrinker.fm.entity.FMReceiveMessage;
+import com.github.codedrinker.fm.entity.FMReplyMessage;
 import com.github.codedrinker.fm.handler.FMHandler;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 当用户往绑定的Facebook Page上发送一消息，webhook 会收到 messages 类型的 webhook Event
@@ -25,6 +30,7 @@ import com.github.codedrinker.fm.handler.FMHandler;
  *
  * @see <a href="https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/messages"/>messages webhook Event</a>
  */
+@Slf4j
 public abstract class FMMessageHandler implements FMHandler {
     /**
      * @param message {
@@ -78,4 +84,38 @@ public abstract class FMMessageHandler implements FMHandler {
     public boolean canHandle(FMReceiveMessage.Messaging message) {
         return message != null && message.getMessage() != null;
     }
+
+    /**
+     * 检测是否是 Quick Reply 消息
+     */
+    protected boolean isQuickReply(FMReceiveMessage.Messaging messaging) {
+        return canHandle(messaging) && messaging.getMessage().getQuick_reply() != null && StringUtils.isNoneBlank(messaging.getMessage().getQuick_reply().getPayload());
+    }
+
+    public final void handle(FMReceiveMessage.Messaging messaging) {
+        if (isQuickReply(messaging)) {
+            handleQuickReply(messaging, messaging.getMessage().getQuick_reply());
+        } else {
+            FMReceiveMessage.Messaging.Message message = messaging.getMessage();
+            if (BooleanUtils.isTrue(message.getIs_echo())) {
+                log.info("FMMessageHandler -> handle() is echo, messaging -> {}", JSON.toJSONString(messaging));
+            } else {
+                handleMessage(messaging);
+            }
+        }
+    }
+
+    /**
+     * 处理 非 {@link com.github.codedrinker.fm.entity.FMReplyMessage.QuickReply} 类型的其他消息
+     */
+    protected abstract void handleMessage(FMReceiveMessage.Messaging messaging);
+
+    /**
+     * 处理 QuickReply 消息
+     *
+     * @param messaging  {@link FMReceiveMessage.Messaging}
+     * @param quickReply {@link FMReceiveMessage.Messaging.Message.QuickReply}
+     */
+    protected abstract void handleQuickReply(FMReceiveMessage.Messaging messaging, FMReceiveMessage.Messaging.Message.QuickReply quickReply);
+
 }

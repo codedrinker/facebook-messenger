@@ -16,9 +16,19 @@
 package com.github.codedrinker.fm.entity;
 
 public class FMEnum {
+
     public enum WebViewHeightRatio {
+        /**
+         * 屏幕下面一点点
+         */
         compact,
+        /**
+         * 基本半个屏幕
+         */
         tall,
+        /**
+         * 全屏
+         */
         full
     }
 }

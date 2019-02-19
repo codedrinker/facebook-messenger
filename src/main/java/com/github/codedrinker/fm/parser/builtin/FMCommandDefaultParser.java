@@ -61,6 +61,11 @@ public class FMCommandDefaultParser implements FMCommandParser {
         return array;
     }
 
+
+    public static FMCommandDefaultParser getDefault() {
+        return new FMCommandDefaultParser();
+    }
+
     /**
      * {@link FMCommandDefaultParser}默认解析器使用"_"分隔符 解析 payload
      * <br/>
@@ -90,7 +95,7 @@ public class FMCommandDefaultParser implements FMCommandParser {
      * @param arguments some arguments
      * @return renamed Command Name
      */
-    public String print(String source, String... arguments) {
+    public String toCommand(String source, String... arguments) {
         String join = Joiner.on("_").join(arguments);
         if (StringUtils.isNotBlank(join)) {
             source = source + "_" + join;

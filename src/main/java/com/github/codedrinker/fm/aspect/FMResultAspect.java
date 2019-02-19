@@ -17,6 +17,9 @@ package com.github.codedrinker.fm.aspect;
 
 import com.github.codedrinker.fm.entity.FMResult;
 
+/**
+ * 用于处理 所有与 Messenger Platform API 交互的响应结果。
+ */
 public interface FMResultAspect {
     void handle(FMResult fmpResult);
 }

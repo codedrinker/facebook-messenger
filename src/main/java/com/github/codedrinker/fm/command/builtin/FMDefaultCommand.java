@@ -13,17 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.codedrinker.fm.command;
+package com.github.codedrinker.fm.command.builtin;
 
-import com.github.codedrinker.fm.FMClient;
 import com.github.codedrinker.fm.builder.FMReplyMessageBuilder;
+import com.github.codedrinker.fm.command.AbsDefaultCommand;
 import com.github.codedrinker.fm.provider.FMProvider;
 
-public class FMDefaultCommand implements FMCommand {
-
-    public String command(String... params) {
-        return FMClient.getInstance().getFmCommandParser().print("DEFAULT", params);
-    }
+public class FMDefaultCommand extends AbsDefaultCommand {
 
     public void execute(String recipient, String... params) {
         FMProvider.sendMessage(FMReplyMessageBuilder

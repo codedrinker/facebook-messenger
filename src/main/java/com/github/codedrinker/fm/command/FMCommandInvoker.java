@@ -17,13 +17,18 @@ package com.github.codedrinker.fm.command;
 
 import com.github.codedrinker.fm.exception.DefaultCommandUndefinedException;
 import com.github.codedrinker.fm.parser.FMCommandParser;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * invoke Command 对象
+ */
+@Slf4j
 public class FMCommandInvoker {
     private static FMCommandInvoker fmCommandInvoker;
-    public static Map<String, FMCommand> commands;
+    private static Map<String, FMCommand> commands = new HashMap<String, FMCommand>();
 
     private FMCommandInvoker() {
     }
@@ -31,23 +36,41 @@ public class FMCommandInvoker {
     public static FMCommandInvoker getInstance() {
         if (fmCommandInvoker == null) {
             fmCommandInvoker = new FMCommandInvoker();
-            commands = new HashMap<String, FMCommand>();
         }
         return fmCommandInvoker;
     }
 
+    /**
+     * 动态增加 Command
+     *
+     * @param fmCommand {@link FMCommand} instance
+     */
     public void put(FMCommand fmCommand) {
         commands.put(fmCommand.command(), fmCommand);
     }
 
+    /**
+     * 触发 默认的兜底 Command<br/>
+     * 通过{@link com.github.codedrinker.fm.FMClient#withFMCommands(FMCommand...)} 可以注入自定义的 Command，如果这些 Command 都不符合执行条件，会触发
+     * Command 名称位 "DEFAULT"的Command，默认 是 {@link com.github.codedrinker.fm.command.builtin.FMDefaultCommand},
+     * 如果要重载 默认的Command，请使用{@link com.github.codedrinker.fm.FMClient#setDefaultCommand(AbsDefaultCommand)}进行设置。
+     *
+     * @return FMCommand
+     */
     private FMCommand invokeDefault() {
-        if (commands.containsKey("DEFAULT")) {
-            return commands.get("DEFAULT");
+        if (commands.containsKey(AbsDefaultCommand.DEFAULT_COMMAND_NAME)) {
+            return commands.get(AbsDefaultCommand.DEFAULT_COMMAND_NAME);
         } else {
             throw new DefaultCommandUndefinedException();
         }
     }
 
+    /**
+     * 根据 {@link FMCommandParser} 获取 正确的 Command 对象
+     *
+     * @param parse {@link FMCommandParser}
+     * @return FMCommand
+     */
     public FMCommand invoke(FMCommandParser parse) {
         try {
             if (parse != null && parse.getName() != null) {

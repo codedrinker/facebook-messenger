@@ -31,7 +31,7 @@ public interface FMCommandParser {
     String[] getParams();
 
     /**
-     * 解析payload 字段，与{@link #print(String, String...)} 的编码操作相对应;
+     * 解析payload 字段，与{@link #toCommand(String, String...)} 的编码操作相对应;
      * <br/>
      * 根据 payload 生成 Command 的解析器
      *
@@ -49,5 +49,5 @@ public interface FMCommandParser {
      * @param params Command Params
      * @return 编码后的有效消息载体
      */
-    String print(String name, String... params);
+    String toCommand(String name, String... params);
 }

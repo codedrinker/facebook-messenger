@@ -15,89 +15,38 @@
  */
 package com.github.codedrinker.fm.entity;
 
+import lombok.Data;
+
+/**
+ * 与 Messenger Platform API 交互的响应数据
+ * <p>
+ * 对于使用 recipient.user_ref 或 recipient.phone_number 指定消息收件人的消息发送请求,
+ * 发送 API 的响应中不再包含 recipient_id.
+ */
+@Data
 public class FMResult {
     private Error error;
+    /**
+     * 用户的唯一编号
+     */
     private String recipient_id;
+    /**
+     * 消息的唯一编号
+     */
     private String message_id;
     private String result;
 
-    public Error getError() {
-        return error;
-    }
-
-    public void setError(Error error) {
-        this.error = error;
-    }
-
-    public String getRecipient_id() {
-        return recipient_id;
-    }
-
-    public void setRecipient_id(String recipient_id) {
-        this.recipient_id = recipient_id;
-    }
-
-    public String getMessage_id() {
-        return message_id;
-    }
-
-    public void setMessage_id(String message_id) {
-        this.message_id = message_id;
-    }
-
-    public String getResult() {
-        return result;
-    }
-
-    public void setResult(String result) {
-        this.result = result;
-    }
-
+    /**
+     * 发送API请求失败时的错误代码见：
+     * <p>
+     * https://developers.facebook.com/docs/messenger-platform/reference/send-api/error-codes
+     */
+    @Data
     public static class Error {
         private String message;
         private String type;
         private String code;
         private String error_subcode;
         private String fbtrace_id;
-
-        public String getMessage() {
-            return message;
-        }
-
-        public void setMessage(String message) {
-            this.message = message;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public void setCode(String code) {
-            this.code = code;
-        }
-
-        public String getError_subcode() {
-            return error_subcode;
-        }
-
-        public void setError_subcode(String error_subcode) {
-            this.error_subcode = error_subcode;
-        }
-
-        public String getFbtrace_id() {
-            return fbtrace_id;
-        }
-
-        public void setFbtrace_id(String fbtrace_id) {
-            this.fbtrace_id = fbtrace_id;
-        }
     }
 }

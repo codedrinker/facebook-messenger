@@ -18,9 +18,10 @@ package com.github.codedrinker.fm;
 import com.alibaba.fastjson.JSON;
 import com.github.codedrinker.fm.aspect.FMDefaultResultAspect;
 import com.github.codedrinker.fm.aspect.FMResultAspect;
+import com.github.codedrinker.fm.command.AbsDefaultCommand;
 import com.github.codedrinker.fm.command.FMCommand;
 import com.github.codedrinker.fm.command.FMCommandInvoker;
-import com.github.codedrinker.fm.command.FMDefaultCommand;
+import com.github.codedrinker.fm.command.builtin.FMDefaultCommand;
 import com.github.codedrinker.fm.entity.*;
 import com.github.codedrinker.fm.exception.AccessSecretUndefinedException;
 import com.github.codedrinker.fm.handler.*;
@@ -30,6 +31,8 @@ import com.github.codedrinker.fm.parser.builtin.FMCommandDefaultParser;
 import com.github.codedrinker.fm.parser.FMCommandParser;
 import com.github.codedrinker.fm.provider.FMProvider;
 import com.github.codedrinker.fm.utils.Signature;
+import com.sun.istack.internal.NotNull;
+import com.sun.istack.internal.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -57,7 +60,7 @@ public class FMClient {
     private FMClient() {
         this.fmResultAspect = new FMDefaultResultAspect();
         setDefaultHandler();
-        setDefaultCommand();
+        setDefaultCommand(null);
     }
 
     public static FMClient getInstance() {
@@ -83,14 +86,14 @@ public class FMClient {
      * @param accessToken  在 Facebook 开发者后台 获取 Facebook Page 的 accessToken
      * @return FMClient
      */
-    public FMClient config(String accessSecret, String accessToken) {
+    public FMClient config(@NotNull String accessSecret, String accessToken) {
         this.accessSecret = accessSecret;
         this.accessToken = accessToken;
         return this;
     }
 
-    private void setDefaultCommand() {
-        FMCommandInvoker.getInstance().put(new FMDefaultCommand());
+    private void setDefaultCommand(@Nullable AbsDefaultCommand defaultCommand) {
+        FMCommandInvoker.getInstance().put(defaultCommand == null ? new FMDefaultCommand() : defaultCommand);
     }
 
     private void setDefaultHandler() {
@@ -206,21 +209,32 @@ public class FMClient {
     }
 
     /**
-     * @see #sendProfileSetting(FMProfileSettingMessage)
+     * 初始化配置 Messenger Bold，例如配置欢迎页，固定菜单 等等
+     *
+     * @param message {@link FMProfileSettingMessage}
+     * @return {@link FMResult}
      */
-    @Deprecated
-    public FMResult sendSetting(FMSettingMessage message) {
-        return FMProvider.sendSetting(message);
-    }
-
     public FMResult sendProfileSetting(FMProfileSettingMessage message) {
         return FMProvider.sendProfileSetting(message);
     }
 
-    public FMUser getUserProfile(String id) {
+    /**
+     * 获取用户的Profile 信息
+     *
+     * @param id 用户的 Messenger Id
+     * @return
+     */
+    public RawFMUser getUserProfile(String id) {
         return FMProvider.getUserProfile(id);
     }
 
+    /**
+     * 签名校验 Messenger Platform 发送的数据 是否合法
+     *
+     * @param payload       Messenger Plaform 发送来的数据
+     * @param xHubSignature 签名摘要，Webhook 被执行的 request 请求Header 中会包含 key 为 "X-Hub-Signature" 的摘要信息，用于执行校验消息的合法性
+     * @return true :消息合法，来自于 Messenger Platform; false: 消息不合法，可能是 accessSecret 密钥错误，也可能消息被篡改
+     */
     public boolean signature(String payload, String xHubSignature) {
         log.debug("payload is : {}", payload);
         log.debug("xHubSignature is : {}", xHubSignature);
@@ -234,6 +248,12 @@ public class FMClient {
         return signature;
     }
 
+    /**
+     * 注入 支持的 Command
+     *
+     * @param fmCommands
+     * @return FMClient
+     */
     public FMClient withFMCommands(FMCommand... fmCommands) {
         for (FMCommand fmCommand : fmCommands) {
             FMCommandInvoker.getInstance().put(fmCommand);
@@ -382,7 +402,7 @@ public class FMClient {
      * @return {@link FMCommandParser}
      */
     public FMCommandParser getFmCommandParser() {
-        return this.fmCommandParser != null ? this.fmCommandParser : new FMCommandDefaultParser();
+        return this.fmCommandParser != null ? this.fmCommandParser : FMCommandDefaultParser.getDefault();
     }
 
     /**

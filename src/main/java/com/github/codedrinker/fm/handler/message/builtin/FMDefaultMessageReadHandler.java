@@ -17,15 +17,16 @@ package com.github.codedrinker.fm.handler.message.builtin;
 
 import com.github.codedrinker.fm.entity.FMReceiveMessage;
 import com.github.codedrinker.fm.handler.message.FMMessageReadHandler;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class FMDefaultMessageReadHandler extends FMMessageReadHandler {
-    Logger logger = LoggerFactory.getLogger(FMDefaultMessageReadHandler.class);
-
     public void handle(FMReceiveMessage.Messaging message) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("dispatch into default message read handler, message : {}", message);
+        if (log.isDebugEnabled()) {
+            log.debug("dispatch into default message read handler, message : {}", message);
         }
     }
 }

@@ -128,69 +128,28 @@ public class FMReceiveMessage {
 
             @Data
             public static class Attachment {
-                public String getTitle() {
-                    return title;
-                }
-
-                public void setTitle(String title) {
-                    this.title = title;
-                }
-
-                public String getType() {
-                    return type;
-                }
-
-                public void setType(String type) {
-                    this.type = type;
-                }
-
-                public Payload getPayload() {
-                    return payload;
-                }
-
-                public void setPayload(Payload payload) {
-                    this.payload = payload;
-                }
 
                 private String title;//title
                 private String type;//image、audio、video、file 或 location
                 private Payload payload;//multimedia 或 location 负载
 
+                @Data
                 public static class Payload {
-                    public String getUrl() {
-                        return url;
-                    }
-
-                    public void setUrl(String url) {
-                        this.url = url;
-                    }
 
                     private String url;
                 }
             }
 
+            @Data
             public static class QuickReply {
-                public String getPayload() {
-                    return payload;
-                }
-
-                public void setPayload(String payload) {
-                    this.payload = payload;
-                }
 
                 private String payload;
             }
 
         }
 
+        @Data
         public static class Member {
-            public String getId() {
-                return id;
-            }
-
-            public void setId(String id) {
-                this.id = id;
-            }
 
             public String id;
         }

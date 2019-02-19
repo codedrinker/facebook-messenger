@@ -15,36 +15,39 @@
  */
 package com.github.codedrinker.fm.handler.message.builtin;
 
+import com.alibaba.fastjson.JSON;
 import com.github.codedrinker.fm.entity.FMReceiveMessage;
+import com.github.codedrinker.fm.entity.FMReplyMessage;
 import com.github.codedrinker.fm.handler.message.FMMessageHandler;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class FMDefaultMessageHandler extends FMMessageHandler {
 
-    Logger logger = LoggerFactory.getLogger(FMDefaultMessageHandler.class);
+    /**
+     * 处理 非 {@link FMReplyMessage.QuickReply} 类型的其他消息
+     *
+     * @param messaging
+     */
+    protected void handleMessage(FMReceiveMessage.Messaging messaging) {
+        if (log.isDebugEnabled()) {
+            log.debug("dispatch into default message handler, which is echo message : {}", JSON.toJSONString(messaging));
+        }
+    }
 
-    public void handle(FMReceiveMessage.Messaging message) {
-        if (message.getMessage().getQuick_reply() != null && StringUtils.isNotBlank(message.getMessage().getQuick_reply().getPayload())) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("dispatch into default message handler, which is quick reply message : {}", message);
-            }
-
-        } else {
-            if (!BooleanUtils.isTrue(message.getMessage().getIs_echo())) {
-
-                if (logger.isDebugEnabled()) {
-                    logger.debug("dispatch into default message handler which is basic message : {}", message);
-                }
-
-            } else {
-
-                if (logger.isDebugEnabled()) {
-                    logger.debug("dispatch into default message handler, which is echo message : {}", message);
-                }
-            }
+    /**
+     * 处理 QuickReply 消息
+     *
+     * @param messaging  {@link FMReceiveMessage.Messaging}
+     * @param quickReply {@link FMReceiveMessage.Messaging.Message.QuickReply}
+     */
+    protected void handleQuickReply(FMReceiveMessage.Messaging messaging, FMReceiveMessage.Messaging.Message.QuickReply quickReply) {
+        if (log.isDebugEnabled()) {
+            log.debug("dispatch into default message handler, which is quick reply message : {}", JSON.toJSONString(messaging));
         }
     }
 }

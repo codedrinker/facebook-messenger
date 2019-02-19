@@ -1,234 +1,152 @@
-/*
- * Copyright 2017 Chunlei Wang
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.github.codedrinker.fm.entity;
 
 import com.github.codedrinker.fm.exception.QuickReplyOutOfBoundException;
+import lombok.Data;
 
 import java.util.List;
 
+/**
+ * Message entity that interacts with messenger server
+ * <p>
+ * https://developers.facebook.com/docs/messenger-platform/reference/send-api#message
+ *
+ * @author wangwei on 2018/8/20.
+ * wangwei@jiandaola.com
+ */
+@Data
 public class FMReplyMessage {
+    /**
+     * 消息类型
+     *
+     * @see MessageType
+     */
+    //private String messaging_type;
     private Member recipient;
     private Message message;
+    /**
+     * 使用发送 API 设置输入提示或发送阅读回执，让用户知道您正在处理他们的请求。
+     */
+    @Deprecated
     private String sender_action;
 
-    public Member getRecipient() {
-        return recipient;
-    }
-
-    public void setRecipient(Member recipient) {
-        this.recipient = recipient;
-    }
-
-    public Message getMessage() {
-        return message;
-    }
-
-    public void setMessage(Message message) {
-        this.message = message;
-    }
-
-    public String getSender_action() {
-        return sender_action;
-    }
-
-    public void setSender_action(String sender_action) {
-        this.sender_action = sender_action;
-    }
-
-    public FMReplyMessage withQuickReplies(List<QuickReply> quickReplies) {
-        this.getMessage().withQuickReplies(quickReplies);
-        return this;
-    }
-
+    @Data
     public static class Message {
-
+        /**
+         * 纯文本类型只需要这一个字段,需要文本限制 必须采用 UTF-8 编码格式，字符数限制为 2000 个。
+         * 您无法同时发送 text 和 attachment
+         */
         private String text;
+        /**
+         * 预览网址。用于发送包含媒体内容的消息或结构化消息。
+         */
         private Attachment attachment;
+        /**
+         * 要随消息发送的一组 quick_reply
+         */
         private List<QuickReply> quick_replies;
 
-        public String getText() {
-            return text;
-        }
-
-        public void setText(String text) {
-            this.text = text;
-        }
-
-        public Attachment getAttachment() {
-            return attachment;
-        }
-
-        public void setAttachment(Attachment attachment) {
-            this.attachment = attachment;
-        }
-
-        public List<QuickReply> getQuick_replies() {
-            return quick_replies;
-        }
-
-        public void setQuick_replies(List<QuickReply> quick_replies) {
-            this.quick_replies = quick_replies;
-        }
-
+        @Data
         public static class Attachment {
-
-            private String type = "template";
+            /**
+             * 附件类型
+             */
+            private AttachmentType type = AttachmentType.template;
+            /**
+             * 附件负载
+             */
             private Payload payload;
 
-            public Payload getPayload() {
-                return payload;
+            /**
+             * 支持的附件类型
+             */
+            public enum AttachmentType {
+                template,
+                image,
+                video,
+                audio,
+                file
             }
 
-            public void setPayload(Payload payload) {
-                this.payload = payload;
-            }
-
-            public String getType() {
-                return type;
-            }
-
-            public void setType(String type) {
-                this.type = type;
-            }
-
+            @Data
             public static class Payload {
-
+                /**
+                 * 常规模板中 必须是 generic 类型
+                 */
                 private TemplateType template_type = TemplateType.generic;
+                private boolean sharable = false;
+                private ImageRatio image_aspect_ratio;
+                /**
+                 * 列表模板 即 template_type = list 会使用
+                 * <p>
+                 * Set the format of the first list item.
+                 * <ul>
+                 * <li>large : Renders the first list item as a cover item.</li>
+                 * <li>compact : Renders an unformatted list item.</li>
+                 * </ul>
+                 */
                 private TopElementStyle top_element_style;
+                /**
+                 * 有效负载 text 消息，也可以不设置，而使用 elements,例如常规模板可以直接使用elements
+                 * 而 按钮模板 使用 text 字段
+                 */
                 private String text;
+
+                /**
+                 * 按钮模板下启用
+                 */
                 private List<Button> buttons;
+                /**
+                 * 描述要发送的常规模板的实例。指定多个元素时，会发送可水平滚动的模板轮播。最多支持 10 个元素。
+                 */
                 private List<Element> elements;
 
-                public TemplateType getTemplate_type() {
-                    return template_type;
-                }
-
-                public void setTemplate_type(TemplateType template_type) {
-                    this.template_type = template_type;
-                }
-
-                public TopElementStyle getTop_element_style() {
-                    return top_element_style;
-                }
-
-                public void setTop_element_style(TopElementStyle top_element_style) {
-                    this.top_element_style = top_element_style;
-                }
-
-                public String getText() {
-                    return text;
-                }
-
-                public void setText(String text) {
-                    this.text = text;
-                }
-
-                public List<Button> getButtons() {
-                    return buttons;
-                }
-
-                public void setButtons(List<Button> buttons) {
-                    this.buttons = buttons;
-                }
-
-                public List<Element> getElements() {
-                    return elements;
-                }
-
-                public void setElements(List<Element> elements) {
-                    this.elements = elements;
-                }
+                /**
+                 * 要在消息中附加收藏的素材，请在消息请求的 payload.attachment_id 属性中指定素材的 attachment_id,
+                 * 此时 template_type 应该为 null，Attachment.type 应该是  image, video, audio, file 中的一种类型
+                 */
+                private String attachment_id;
             }
         }
 
         public Message withQuickReplies(List<QuickReply> quick_replies) {
             if (quick_replies == null) {
-                return null;
-            } else if (quick_replies != null && quick_replies.size() > QUICK_REPLY_MAX_SIZE) {
+                return this;
+            }
+            if (quick_replies.size() > QUICK_REPLY_MAX_SIZE) {
                 throw new QuickReplyOutOfBoundException();
             }
             this.setQuick_replies(quick_replies);
             return this;
         }
-
-        public Message withButtons(Button... buttons) {
-            for (Button button : buttons) {
-                this.getAttachment().getPayload().getButtons().add(button);
-            }
-            return this;
-        }
     }
 
+    /**
+     * 消息接收人
+     */
+    @Data
     public static class Member {
-        public String id;
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
         public Member(String id) {
             this.id = id;
         }
 
         public Member() {
         }
+
+        public String id;
+//        public String phone_number;
+//        public String user_ref;
+//        public String name;
     }
 
+    @Data
     public static class QuickReply {
-
+        /**
+         * text 或 location,user_phone_number,user_email
+         */
         private QuickReplyType content_type;
         private String title;
         private String payload;
         private String image_url;
-
-        public QuickReplyType getContent_type() {
-            return content_type;
-        }
-
-        public void setContent_type(QuickReplyType content_type) {
-            this.content_type = content_type;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public String getPayload() {
-            return payload;
-        }
-
-        public void setPayload(String payload) {
-            this.payload = payload;
-        }
-
-        public String getImage_url() {
-            return image_url;
-        }
-
-        public void setImage_url(String image_url) {
-            this.image_url = image_url;
-        }
 
         public QuickReply() {
 
@@ -241,63 +159,53 @@ public class FMReplyMessage {
         }
     }
 
+    @Data
     public static class Element {
-
+        /**
+         * 气泡标题 的字符数限制为 80 个
+         */
         private String title;
+        /**
+         * 气泡副标题 的字符数限制为 80 个
+         */
         private String subtitle;
+        /**
+         * 轻触气泡打开的网址
+         */
+        @Deprecated
         private String item_url;
+        /**
+         * 用户轻触元素时要触发的默认操作 基本可以复用button 类,但是不能与item_url同时出现,Button中的title 属性无效
+         */
         private Button default_action;
+        /**
+         * 显示在模板中的图片网址
+         */
         private String image_url;
+        /**
+         * 要添加到模板中的按钮数组。每个元素最多支持 3 个按钮。
+         */
         private List<Button> buttons;
 
-        public String getTitle() {
-            return title;
-        }
+        /**
+         * only for media template
+         */
+        private MediaTemplate_MediaType media_type;
+        /**
+         * The attachment ID of the image or video. Cannot be used if url is set.
+         * how to get "attachment_id"? you can upload your media file by Upload API
+         * (https://graph.facebook.com/v2.6/me/message_attachments?access_token=<PAGE_ACCESS_TOKEN>)
+         */
+        private String attachment_id;
 
-        public void setTitle(String title) {
-            this.title = title;
-        }
+        /**
+         * The URL of the image. Cannot be used if attachment_id is set. must be FACEBOOK_URL
+         */
+        private String url;
 
-        public String getSubtitle() {
-            return subtitle;
-        }
-
-        public void setSubtitle(String subtitle) {
-            this.subtitle = subtitle;
-        }
-
-        public String getItem_url() {
-            return item_url;
-        }
-
-        public void setItem_url(String item_url) {
-            this.item_url = item_url;
-        }
-
-        public Button getDefault_action() {
-            return default_action;
-        }
-
-        public void setDefault_action(Button default_action) {
-            this.default_action = default_action;
-        }
-
-        public String getImage_url() {
-            return image_url;
-        }
-
-        public void setImage_url(String image_url) {
-            this.image_url = image_url;
-        }
-
-        public List<Button> getButtons() {
-            return buttons;
-        }
-
-        public void setButtons(List<Button> buttons) {
-            this.buttons = buttons;
-        }
-
+        /**
+         * button 中不能带  title 属性
+         */
         public Element withDefaultAction(Button button) {
             this.item_url = null;
             this.default_action = button;
@@ -305,71 +213,49 @@ public class FMReplyMessage {
         }
     }
 
-    public static class Button {
+    @Data
+    public static class ShareContent {
+        private Message.Attachment attachment;
+    }
 
-        private ButtonType type;//required
-        private String url;//This URL is opened in a mobile browser when the button is tapped required
-        private String title;//limit 20 required
+    @Data
+    public static class Button {
+        /**
+         * required
+         */
+        private ButtonType type;
+        /**
+         * This URL is opened in a mobile browser when the button is tapped required
+         */
+        private String url;
+        /**
+         * limit 20 required
+         */
+        private String title;
         private FMEnum.WebViewHeightRatio webview_height_ratio;
+        /**
+         * 如果菜单项类型为 web_url 且 Messenger 功能插件 SDK 将在网页视图中使用，则该对象必须为 true
+         * 可选参数
+         */
         private Boolean messenger_extensions;
-        private String fallback_url;//URL to use on clients that don't support Messenger Extensions. If this is not defined, the url will be used as the fallback.
+        /**
+         * URL to use on clients that don't support Messenger Extensions.
+         * If this is not defined, the url will be used as the fallback.
+         */
+        private String fallback_url;
+
+        /**
+         * 仅限于postback时候使用
+         */
         private String payload;
 
-        public ButtonType getType() {
-            return type;
-        }
+        private ShareContent share_contents;
 
-        public void setType(ButtonType type) {
-            this.type = type;
-        }
-
-        public String getUrl() {
-            return url;
-        }
-
-        public void setUrl(String url) {
-            this.url = url;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public FMEnum.WebViewHeightRatio getWebview_height_ratio() {
-            return webview_height_ratio;
-        }
-
-        public void setWebview_height_ratio(FMEnum.WebViewHeightRatio webview_height_ratio) {
-            this.webview_height_ratio = webview_height_ratio;
-        }
-
-        public Boolean getMessenger_extensions() {
-            return messenger_extensions;
-        }
-
-        public void setMessenger_extensions(Boolean messenger_extensions) {
-            this.messenger_extensions = messenger_extensions;
-        }
-
-        public String getFallback_url() {
-            return fallback_url;
-        }
-
-        public void setFallback_url(String fallback_url) {
-            this.fallback_url = fallback_url;
-        }
-
-        public String getPayload() {
-            return payload;
-        }
-
-        public void setPayload(String payload) {
-            this.payload = payload;
-        }
+        /**
+         * 网址按钮和菜单项会有这个属性
+         * 同 {@link com.github.codedrinker.fm.entity.FMProfileSettingMessage.MenuItem#webview_share_button}
+         */
+        private String webview_share_button;
 
 
         public static Button webUrlButton(String title, String url) {
@@ -408,34 +294,129 @@ public class FMReplyMessage {
         }
     }
 
+    /**
+     * 消息类型
+     * <p>
+     * https://developers.facebook.com/docs/messenger-platform/send-messages/#messaging_types
+     */
+    public enum MessageType {
+        /**
+         * 消息是为了回复收到的消息而发送
+         */
+        RESPONSE("RESPONSE"),
+        /**
+         * 消息为主动发送，并非回复收到的消息。
+         * 这包括在 24 小时标准消息发送时间窗以内或根据 24+1 政策发送的推广类和非推广类消息。
+         */
+        UPDATE("UPDATE"),
+        /**
+         * 消息不具有推广性质，属于在 24 小时标准消息发送时间窗以外发送，带有消息标签。
+         */
+        MESSAGE_TAG("MESSAGE_TAG");
+        String value;
+
+        MessageType(String value) {
+            this.value = value;
+        }
+    }
+
     public enum QuickReplyType {
-        text, location
+        text,
+        location,
+        /**
+         * 如果用户的个人主页中没有手机号，则快速回复不会显示
+         */
+        user_phone_number,
+        /**
+         * 如果用户的个人主页中没有电子邮箱，则快速回复不会显示
+         */
+        user_email
     }
 
+    /**
+     * 消息模板类型
+     */
     public enum TemplateType {
-        button, generic, list
+        generic,
+        list,
+        button,
+        /**
+         * 媒体模板
+         */
+        media,
+        /**
+         * 开放图谱模板
+         */
+        open_graph
     }
 
+    /**
+     * Currently, media templates only support sending pictures and videos, and currently do not support sending audio.
+     */
+    public enum MediaTemplate_MediaType {
+        image,
+        video
+    }
+
+    /**
+     * 按钮类型
+     */
     public enum ButtonType {
         web_url,
         postback,
-        element_share,//Only individual message bubbles can be shared.
+        /**
+         * Only individual message bubbles can be shared.
+         */
+        element_share,
         account_link,
         account_unlink
 
     }
 
     public enum TopElementStyle {
+        /**
+         * 第一个图很大的那种
+         */
         large,
+        /**
+         * 所有的图都一样的平展
+         */
         compact
     }
 
+    /**
+     * 图片显示的宽高比
+     */
+    public enum ImageRatio {
+        /**
+         * 1.91:1
+         * default
+         */
+        horizontal,
+        square
+    }
+
     public static final int TEXT_MAX_SIZE = 320;
+    /**
+     * 要添加到模板中的按钮数组。每个元素最多支持 3 个按钮。
+     */
     public static final int BUTTON_MAX_SIZE = 3;
+
+    /**
+     * 指定多个元素时，会发送可水平滚动的模板轮播。最多支持 10 个元素。
+     */
     public static final int ELEMENT_MAX_SIZE = 10;
+    public static final int MEDIA_ELEMENT_MAX_SIZE = 1;
+    public static final int MEDIA_BUTTON_MAX_SIZE = 1;
+    /**
+     * 显示在模板中的标题。不超过 80 个字符。
+     */
     public static final int TITLE_MAX_SIZE = 80;
     public static final int LIST_ELEMENT_MAX_SIZE = 4;
     public static final int LIST_ELEMENT_MIN_SIZE = 2;
     public static final int LIST_ELEMENT_BUTTON_MAX_SIZE = 1;
-    public static final int QUICK_REPLY_MAX_SIZE = 10;
+    /**
+     * 最多可定义 11 个快速回复按钮的对象
+     */
+    public static final int QUICK_REPLY_MAX_SIZE = 11;
 }
