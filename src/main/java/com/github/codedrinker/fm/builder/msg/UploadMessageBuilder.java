@@ -1,8 +1,7 @@
 package com.github.codedrinker.fm.builder.msg;
 
-
-import com.lifely.silk.messenger.web.builder.attachment.UploadAttachmentBuilder;
-import com.lifely.silk.messenger.web.entity.FMPUploadMessage;
+import com.github.codedrinker.fm.builder.attachment.UploadAttachmentBuilder;
+import com.github.codedrinker.fm.entity.FMUploadMessage;
 
 /**
  * @author wangwei on 2018/9/7.
@@ -10,11 +9,11 @@ import com.lifely.silk.messenger.web.entity.FMPUploadMessage;
  */
 public class UploadMessageBuilder {
 
-    private FMPUploadMessage message;
+    private FMUploadMessage message;
 
     private UploadMessageBuilder() {
-        message = new FMPUploadMessage();
-        message.setMessage(new FMPUploadMessage.UploadMessage());
+        message = new FMUploadMessage();
+        message.setMessage(new FMUploadMessage.UploadMessage());
     }
 
     public static UploadMessageBuilder defaultBuilder() {
@@ -38,7 +37,7 @@ public class UploadMessageBuilder {
      * @param resue         Whether to reuse
      * @return this instance
      */
-    public UploadMessageBuilder withAttachment(FMPUploadMessage.UploadAttachmentType type, String attachmentUrl, boolean resue) {
+    public UploadMessageBuilder withAttachment(FMUploadMessage.UploadAttachmentType type, String attachmentUrl, boolean resue) {
         message.getMessage().setAttachment(UploadAttachmentBuilder
                 .defaultBuilder()
                 .withAttachmentType(type)
@@ -48,7 +47,7 @@ public class UploadMessageBuilder {
         return this;
     }
 
-    public FMPUploadMessage build() {
+    public FMUploadMessage build() {
         return message;
     }
 }

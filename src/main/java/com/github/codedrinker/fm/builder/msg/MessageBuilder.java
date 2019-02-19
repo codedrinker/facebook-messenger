@@ -7,6 +7,7 @@ import com.github.codedrinker.fm.exception.QuickReplyOutOfBoundException;
 import com.github.codedrinker.fm.exception.TextOutOfBoundException;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**

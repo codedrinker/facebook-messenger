@@ -4,9 +4,6 @@ package com.github.codedrinker.fm.builder.attachment;
 import com.github.codedrinker.fm.builder.element.MediaElementBuilder;
 import com.github.codedrinker.fm.entity.FMReplyMessage;
 import com.github.codedrinker.fm.exception.ElementsOutOfBoundException;
-import com.lifely.silk.messenger.web.builder.alement.MediaElementBuilder;
-import com.lifely.silk.messenger.web.entity.FMPReplyMessage;
-import com.lifely.silk.messenger.web.execption.ElementsOutOfBoundExecption;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,9 +1,9 @@
 package com.github.codedrinker.fm.builder.msg;
 
 
-import com.lifely.silk.messenger.web.builder.attachment.GenericAttachmentBuilder;
-import com.lifely.silk.messenger.web.builder.attachment.MediaAttachmentBuilder;
-import com.lifely.silk.messenger.web.entity.FMPReplyMessage;
+import com.github.codedrinker.fm.builder.attachment.GenericAttachmentBuilder;
+import com.github.codedrinker.fm.builder.attachment.MediaAttachmentBuilder;
+import com.github.codedrinker.fm.entity.FMReplyMessage;
 
 /**
  * for media template message
@@ -38,7 +38,7 @@ public class MediaMessageBuilder extends MessageBuilder {
      * {@inheritDoc}
      */
     @Override
-    public MessageBuilder withQuickReplies(FMPReplyMessage.QuickReply... quickReplies) {
+    public MessageBuilder withQuickReplies(FMReplyMessage.QuickReply... quickReplies) {
         return super.withQuickReplies(quickReplies);
     }
 }
