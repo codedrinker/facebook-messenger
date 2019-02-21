@@ -60,7 +60,6 @@ public class FMClient {
     private FMClient() {
         this.fmResultAspect = new FMDefaultResultAspect();
         setDefaultHandler();
-        setDefaultCommand(null);
     }
 
     public static FMClient getInstance() {
@@ -92,7 +91,12 @@ public class FMClient {
         return this;
     }
 
-    private void setDefaultCommand(@Nullable AbsDefaultCommand defaultCommand) {
+    /**
+     * set default Command
+     *
+     * @param defaultCommand
+     */
+    public void setDefaultCommand(@Nullable AbsDefaultCommand defaultCommand) {
         FMCommandInvoker.getInstance().put(defaultCommand == null ? new FMDefaultCommand() : defaultCommand);
     }
 

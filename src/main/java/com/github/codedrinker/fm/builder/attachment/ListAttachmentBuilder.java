@@ -115,7 +115,7 @@ public class ListAttachmentBuilder extends AttachmentBuilder {
         }
 
         if (this.attachment.getPayload().getElements() == null) {
-            this.attachment.getPayload().setElements(new ArrayList<>());
+            this.attachment.getPayload().setElements(new ArrayList<FMReplyMessage.Element>());
         }
 
         for (FMReplyMessage.Element element : elements) {

@@ -3,6 +3,7 @@ package com.github.codedrinker.fm.entity;
 import com.github.codedrinker.fm.exception.QuickReplyOutOfBoundException;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**

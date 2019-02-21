@@ -2,13 +2,9 @@ package com.fm.example.demo.commands;
 
 import com.github.codedrinker.fm.FMClient;
 import com.github.codedrinker.fm.command.FMCommand;
-import com.github.codedrinker.fm.command.FMCommandInvoker;
-import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
