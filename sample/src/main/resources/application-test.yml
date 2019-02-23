@@ -3,7 +3,7 @@ server:
 logging:
   level:
     root: INFO
-fmp:
+fm:
   access:
     token: replace_your_token
     secret: replace_your_secret
