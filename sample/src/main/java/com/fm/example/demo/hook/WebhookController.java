@@ -3,7 +3,7 @@ package com.fm.example.demo.hook;
 import com.fm.example.demo.handler.*;
 import com.fm.example.demo.util.PersistentMenuCreator;
 import com.fm.example.demo.util.SettingMessageHelper;
-import com.github.codedrinker.fm.FMClient;
+import com.gerenvip.messenger.fm.FMClient;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

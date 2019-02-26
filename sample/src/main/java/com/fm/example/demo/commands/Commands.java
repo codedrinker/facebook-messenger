@@ -1,7 +1,7 @@
 package com.fm.example.demo.commands;
 
-import com.github.codedrinker.fm.FMClient;
-import com.github.codedrinker.fm.command.FMCommand;
+import com.gerenvip.messenger.fm.FMClient;
+import com.gerenvip.messenger.fm.command.FMCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

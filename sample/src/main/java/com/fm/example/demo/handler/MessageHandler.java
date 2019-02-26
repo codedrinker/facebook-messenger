@@ -1,12 +1,11 @@
 package com.fm.example.demo.handler;
 
-import com.alibaba.fastjson.JSON;
-import com.github.codedrinker.fm.FMClient;
-import com.github.codedrinker.fm.command.FMCommand;
-import com.github.codedrinker.fm.command.FMCommandInvoker;
-import com.github.codedrinker.fm.entity.FMReceiveMessage;
-import com.github.codedrinker.fm.handler.message.FMMessageHandler;
-import com.github.codedrinker.fm.parser.FMCommandParser;
+import com.gerenvip.messenger.fm.FMClient;
+import com.gerenvip.messenger.fm.command.FMCommand;
+import com.gerenvip.messenger.fm.command.FMCommandInvoker;
+import com.gerenvip.messenger.fm.entity.FMReceiveMessage;
+import com.gerenvip.messenger.fm.handler.message.FMMessageHandler;
+import com.gerenvip.messenger.fm.parser.FMCommandParser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

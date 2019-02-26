@@ -212,10 +212,10 @@ package com.jiandaola.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.github.codedrinker.fm.builder.*;
-import com.github.codedrinker.fm.entity.FMReceiveMessage;
-import com.github.codedrinker.fm.entity.FMReplyMessage;
-import com.github.codedrinker.fm.handler.message.FMMessageHandler;
-import com.github.codedrinker.fm.provider.FMProvider;
+import FMReceiveMessage;
+import FMReplyMessage;
+import FMMessageHandler;
+import FMProvider;
 import org.apache.commons.lang3.StringUtils;
 
 

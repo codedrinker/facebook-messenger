@@ -4,25 +4,25 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.codedrinker</groupId>
-    <artifactId>facebook-messenger</artifactId>
-    <version>1.0.3</version>
+    <groupId>com.gerenvip.messenger</groupId>
+    <artifactId>messenger-platform-sdk</artifactId>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>Facebook Messenger API</name>
-    <description>A most easily usable Facebook Messenger Platform API</description>
-    <url>https://github.com/codedrinker/facebook-messenger</url>
+    <name>Facebook Messenger Platform SDK</name>
+    <description>Unofficial SDK of Facebook Messenger Platform API </description>
+    <url>https://github.com/gerenvip/messenger-platform-sdk</url>
 
     <scm>
-        <url>https://github.com/codedrinker/facebook-messenger</url>
-        <connection>scm:git@github.com:codedrinker/facebook-messenger.git</connection>
+        <url>https://github.com/gerenvip/messenger-platform-sdk</url>
+        <connection>scm:git@github.com:gerenvip/messenger-platform-sdk.git</connection>
     </scm>
 
     <developers>
         <developer>
-            <id>codedrinker</id>
-            <name>codedrinker</name>
-            <email>gwangchunlei@gmail.com</email>
+            <id>gerenvip</id>
+            <name>gerenvip</name>
+            <email>gerenvip@gmail.com</email>
         </developer>
     </developers>
 

@@ -1,8 +1,8 @@
 package com.fm.example.demo.util;
 
 import com.fm.example.demo.commands.GetStartedCommand;
-import com.github.codedrinker.fm.builder.FMProfileSettingMessengeBuilder;
-import com.github.codedrinker.fm.entity.FMProfileSettingMessage;
+import com.gerenvip.messenger.fm.builder.FMProfileSettingMessengeBuilder;
+import com.gerenvip.messenger.fm.entity.FMProfileSettingMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

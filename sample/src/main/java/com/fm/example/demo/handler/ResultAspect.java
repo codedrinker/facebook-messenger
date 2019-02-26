@@ -1,8 +1,8 @@
 package com.fm.example.demo.handler;
 
 import com.alibaba.fastjson.JSON;
-import com.github.codedrinker.fm.aspect.FMResultAspect;
-import com.github.codedrinker.fm.entity.FMResult;
+import com.gerenvip.messenger.fm.aspect.FMResultAspect;
+import com.gerenvip.messenger.fm.entity.FMResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

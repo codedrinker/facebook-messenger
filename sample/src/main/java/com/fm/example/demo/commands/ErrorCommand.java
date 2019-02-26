@@ -1,11 +1,11 @@
 package com.fm.example.demo.commands;
 
-import com.github.codedrinker.fm.builder.FMReplyMessageBuilder;
-import com.github.codedrinker.fm.command.FMCommand;
-import com.github.codedrinker.fm.entity.FMReplyMessage;
-import com.github.codedrinker.fm.parser.FMCommandParser;
-import com.github.codedrinker.fm.parser.builtin.FMCommandDefaultParser;
-import com.github.codedrinker.fm.provider.FMProvider;
+import com.gerenvip.messenger.fm.builder.FMReplyMessageBuilder;
+import com.gerenvip.messenger.fm.command.FMCommand;
+import com.gerenvip.messenger.fm.entity.FMReplyMessage;
+import com.gerenvip.messenger.fm.parser.FMCommandParser;
+import com.gerenvip.messenger.fm.parser.builtin.FMCommandDefaultParser;
+import com.gerenvip.messenger.fm.provider.FMProvider;
 import org.springframework.stereotype.Component;
 
 /**

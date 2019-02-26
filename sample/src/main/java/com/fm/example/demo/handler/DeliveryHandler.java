@@ -1,7 +1,7 @@
 package com.fm.example.demo.handler;
 
-import com.github.codedrinker.fm.entity.FMReceiveMessage;
-import com.github.codedrinker.fm.handler.message.FMMessageDeliveryHandler;
+import com.gerenvip.messenger.fm.entity.FMReceiveMessage;
+import com.gerenvip.messenger.fm.handler.message.FMMessageDeliveryHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
