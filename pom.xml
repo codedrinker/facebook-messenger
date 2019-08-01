@@ -4,25 +4,25 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.codedrinker</groupId>
-    <artifactId>facebook-messenger</artifactId>
+    <groupId>com.gerenvip.messenger</groupId>
+    <artifactId>messenger-platform-sdk</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>Facebook Messenger API</name>
-    <description>A most easily usable Facebook Messenger Platform API</description>
-    <url>https://github.com/codedrinker/facebook-messenger</url>
+    <name>Facebook Messenger Platform SDK</name>
+    <description>Unofficial SDK of Facebook Messenger Platform API </description>
+    <url>https://github.com/gerenvip/messenger-platform-sdk</url>
 
     <scm>
-        <url>https://github.com/codedrinker/facebook-messenger</url>
-        <connection>scm:git@github.com:codedrinker/facebook-messenger.git</connection>
+        <url>https://github.com/gerenvip/messenger-platform-sdk</url>
+        <connection>scm:git@github.com:gerenvip/messenger-platform-sdk.git</connection>
     </scm>
 
     <developers>
         <developer>
-            <id>codedrinker</id>
-            <name>codedrinker</name>
-            <email>gwangchunlei@gmail.com</email>
+            <id>gerenvip</id>
+            <name>gerenvip</name>
+            <email>gerenvip@gmail.com</email>
         </developer>
     </developers>
 
@@ -34,11 +34,28 @@
         </license>
     </licenses>
 
+    <properties>
+        <java.version>1.8</java.version>
+        <lombok.version>1.16.18</lombok.version>
+    </properties>
+
     <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <optional>true</optional>
+        </dependency>
+
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>4.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>3.11.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -63,15 +80,38 @@
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.23</version>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.25</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>7</source>
+                    <target>7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
     <profiles>
         <profile>
             <id>release</id>
             <build>
                 <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <configuration>
+                            <source>1.7</source>
+                            <target>1.7</target>
+                        </configuration>
+                    </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>

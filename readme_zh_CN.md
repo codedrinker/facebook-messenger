@@ -19,11 +19,23 @@ FMP 的原理比较简单，首先你需要拥有一个 Facebook Page，用来�
 ### 构建项目
 #### 创建项目并引入jar
 使用idea创建 spring-boot项目，勾选web选项，等待项目加载成功。在pom里面加入如下依赖。
+Add repository  
+
+```xml
+<repositories>
+    <repository>
+            <id>jitpack.io</id>
+            <url>https://www.jitpack.io</url>
+</repository>
+</repositories>
+```
+Add dependency  
+
 ```xml
 <dependency>
-  <groupId>com.github.codedrinker</groupId>
+  <groupId>com.github.gerenvip</groupId>
   <artifactId>facebook-messenger</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.2</version>
 </dependency>
 ```
 #### 添加webhook接口
@@ -200,10 +212,10 @@ package com.jiandaola.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.github.codedrinker.fm.builder.*;
-import com.github.codedrinker.fm.entity.FMReceiveMessage;
-import com.github.codedrinker.fm.entity.FMReplyMessage;
-import com.github.codedrinker.fm.handler.FMMessageHandler;
-import com.github.codedrinker.fm.provider.FMProvider;
+import FMReceiveMessage;
+import FMReplyMessage;
+import FMMessageHandler;
+import FMProvider;
 import org.apache.commons.lang3.StringUtils;
 
 
